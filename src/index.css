@@ -1,0 +1,172 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Tajawal', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Baloo Bhaijaan 2', 'Tajawal', system-ui, sans-serif;
+
+  --animate-float: float 4s ease-in-out infinite;
+  --animate-pop: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-wiggle: wiggle 0.9s ease-in-out infinite;
+  --animate-fly-up: fly-up 1.2s ease-out forwards;
+  --animate-glow: glow 2s ease-in-out infinite;
+  --animate-spin-slow: spin 14s linear infinite;
+  --animate-shine: shine 2.6s ease-in-out infinite;
+  --animate-fade-in: fade-in 0.25s ease-out both;
+  --animate-slide-up: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-bounce-in: bounce-in 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  --animate-twinkle: twinkle 1.8s ease-in-out infinite;
+  --animate-rise: rise 4s linear infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes pop {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes wiggle {
+    0%, 100% { transform: rotate(-6deg); }
+    50% { transform: rotate(6deg); }
+  }
+  @keyframes fly-up {
+    0% { transform: translate(-50%, 0) scale(0.6); opacity: 0; }
+    15% { transform: translate(-50%, -10px) scale(1.25); opacity: 1; }
+    100% { transform: translate(-50%, -110px) scale(1); opacity: 0; }
+  }
+  @keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 8px rgb(250 204 21 / 0.6)); }
+    50% { filter: drop-shadow(0 0 26px rgb(250 204 21 / 0.95)); }
+  }
+  @keyframes shine {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(16px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes bounce-in {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0); }
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.7); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+  @keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-110vh) scale(0.6); opacity: 0; }
+  }
+}
+
+:root {
+  color-scheme: light;
+}
+.dark {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  @apply font-sans text-slate-800 antialiased dark:text-slate-100;
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgb(196 181 253 / 0.45), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgb(251 207 232 / 0.45), transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, rgb(167 243 208 / 0.35), transparent 60%),
+    #f7f6fd;
+  background-attachment: fixed;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dark body {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgb(91 33 182 / 0.35), transparent 60%),
+    radial-gradient(900px 500px at -10% 10%, rgb(157 23 77 / 0.25), transparent 60%),
+    radial-gradient(900px 600px at 50% 110%, rgb(6 95 70 / 0.25), transparent 60%),
+    #0b1020;
+  background-attachment: fixed;
+}
+
+@utility glass {
+  @apply border border-white/70 bg-white/75 shadow-[0_8px_30px_-12px_rgb(76_29_149/0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/60 dark:shadow-[0_8px_30px_-12px_rgb(0_0_0/0.6)];
+}
+
+@utility font-display {
+  font-family: var(--font-display);
+}
+
+@utility text-gradient {
+  @apply bg-gradient-to-l from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent dark:from-violet-300 dark:via-fuchsia-300 dark:to-amber-300;
+}
+
+@utility shine {
+  background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: var(--animate-shine);
+}
+
+/* Disable decorative motion when the teacher turns animations off or the OS asks for reduced motion. */
+.no-motion *,
+.no-motion *::before,
+.no-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* Scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(139 92 246 / 0.35) transparent;
+}
+
+input[type='number']::-webkit-inner-spin-button {
+  opacity: 0.4;
+}
+
+/* ---------- Print ---------- */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000;
+  }
+  .glass {
+    background: #fff !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    border-color: #e5e7eb !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-full {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
