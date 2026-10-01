@@ -1,8 +1,6 @@
 import type { AppState } from '../types';
 import { createDemoState, createEmptyState } from '../data/demo';
 
-const KEY = 'class-rewards:state:v1';
-
 /** Fill in any fields missing from older/partial saves so the app never crashes on load. */
 export function normalizeState(raw: unknown): AppState {
   if (!raw || typeof raw !== 'object') throw new Error('ملف غير صالح');
@@ -28,32 +26,104 @@ export function normalizeState(raw: unknown): AppState {
   };
 }
 
-export function loadState(): AppState {
-  try {
-    const text = localStorage.getItem(KEY);
-    if (text) return normalizeState(JSON.parse(text));
-  } catch (err) {
-    console.warn('Could not load saved state, starting with demo data.', err);
-  }
-  return createDemoState();
+const LEGACY_KEY = 'class-rewards:state:v1';
+const REGISTRY_KEY = 'class-rewards:classes:v1';
+const classKey = (id: string) => `class-rewards:class:${id}`;
+
+export interface ClassSummary {
+  id: string;
+  name: string;
+  teacher: string;
+  students: number;
 }
 
-export function saveState(state: AppState): boolean {
+export interface Registry {
+  activeId: string;
+  classes: ClassSummary[];
+}
+
+export const summarize = (id: string, state: AppState): ClassSummary => ({
+  id,
+  name: state.settings.className,
+  teacher: state.settings.teacherName,
+  students: state.students.length,
+});
+
+export const newClassId = () => 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+function readJSON(key: string): unknown {
   try {
-    localStorage.setItem(KEY, JSON.stringify(state));
+    const text = localStorage.getItem(key);
+    return text ? JSON.parse(text) : null;
+  } catch (err) {
+    console.warn('Could not read', key, err);
+    return null;
+  }
+}
+
+function writeJSON(key: string, value: unknown): boolean {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch (err) {
-    console.warn('Could not save state', err);
+    console.warn('Could not save', key, err);
     return false;
   }
 }
 
-export function clearSavedState() {
+export function loadClass(id: string): AppState | null {
+  const raw = readJSON(classKey(id));
+  if (!raw) return null;
   try {
-    localStorage.removeItem(KEY);
+    return normalizeState(raw);
+  } catch (err) {
+    console.warn('Saved class is invalid', id, err);
+    return null;
+  }
+}
+
+export const saveClass = (id: string, state: AppState) => writeJSON(classKey(id), state);
+export const saveRegistry = (reg: Registry) => writeJSON(REGISTRY_KEY, reg);
+
+export function deleteClassData(id: string) {
+  try {
+    localStorage.removeItem(classKey(id));
   } catch {
     /* ignore */
   }
+}
+
+/**
+ * Load the class registry and the active class. Migrates the single-class
+ * save from earlier versions into the first class of the registry.
+ */
+export function loadWorkspace(): { registry: Registry; state: AppState } {
+  const reg = readJSON(REGISTRY_KEY) as Registry | null;
+  if (reg && Array.isArray(reg.classes) && reg.classes.length) {
+    const activeId = reg.classes.some((c) => c.id === reg.activeId) ? reg.activeId : reg.classes[0].id;
+    const state = loadClass(activeId) ?? createDemoState();
+    return { registry: { ...reg, activeId }, state };
+  }
+  let state: AppState | null = null;
+  const legacy = readJSON(LEGACY_KEY);
+  if (legacy) {
+    try {
+      state = normalizeState(legacy);
+    } catch {
+      state = null;
+    }
+  }
+  state ??= createDemoState();
+  const id = newClassId();
+  const registry: Registry = { activeId: id, classes: [summarize(id, state)] };
+  if (saveClass(id, state) && saveRegistry(registry)) {
+    try {
+      localStorage.removeItem(LEGACY_KEY);
+    } catch {
+      /* ignore */
+    }
+  }
+  return { registry, state };
 }
 
 export function downloadBackup(state: AppState) {
@@ -62,7 +132,8 @@ export function downloadBackup(state: AppState) {
   const a = document.createElement('a');
   const d = new Date();
   a.href = url;
-  a.download = `class-rewards-backup-${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}.json`;
+  const name = state.settings.className.replace(/[\\/:*?"<>|]+/g, '').trim() || 'class';
+  a.download = `class-rewards-${name}-${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}.json`;
   document.body.appendChild(a);
   a.click();
   a.remove();

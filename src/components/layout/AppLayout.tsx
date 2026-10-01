@@ -25,10 +25,12 @@ export function AppLayout() {
           <div className="fixed inset-0 z-[70] lg:hidden">
             <div className="animate-fade-in absolute inset-0 bg-slate-950/40 backdrop-blur-sm" onClick={() => setDrawer(false)} />
             <div className="animate-slide-up absolute inset-y-0 start-0 w-[85%] max-w-xs bg-white shadow-2xl dark:bg-slate-900">
-              <button className="absolute left-3 top-5 rounded-xl p-2 hover:bg-slate-100 dark:hover:bg-white/10" onClick={() => setDrawer(false)} aria-label="إغلاق">
+              <button className="absolute left-3 top-3 z-10 rounded-xl p-2 hover:bg-slate-100 dark:hover:bg-white/10" onClick={() => setDrawer(false)} aria-label="إغلاق">
                 <X />
               </button>
-              <SidebarContent onNavigate={() => setDrawer(false)} />
+              <div className="h-full pt-12">
+                <SidebarContent onNavigate={() => setDrawer(false)} />
+              </div>
             </div>
           </div>,
           document.body,

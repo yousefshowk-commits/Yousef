@@ -86,7 +86,7 @@ export default function SettingsPage() {
   };
 
   const wipe = async () => {
-    if (!(await confirm({ title: 'حذف جميع البيانات؟', message: 'سيتم حذف كل شيء والعودة لشاشة البداية. لا يمكن التراجع!', confirmText: 'حذف الكل', danger: true, icon: '🗑️' }))) return;
+    if (!(await confirm({ title: 'حذف بيانات هذا الفصل؟', message: 'سيتم حذف طلاب هذا الفصل ونقاطهم وإعداداته والعودة لشاشة الإعداد. الفصول الأخرى لن تتأثر. لا يمكن التراجع!', confirmText: 'حذف', danger: true, icon: '🗑️' }))) return;
     window.location.hash = '#/setup';
     update(() => createEmptyState({ isDemo: false, onboarded: false, theme: settings.theme }));
   };
@@ -219,7 +219,7 @@ export default function SettingsPage() {
         </Section>
 
         <Section icon="💾" title="البيانات والنسخ الاحتياطي" id="data">
-          <p className="mb-4 text-sm text-slate-500">تُحفظ البيانات تلقائيًا في هذا المتصفح. صدّر نسخة احتياطية بانتظام لنقلها لجهاز آخر أو حمايتها.</p>
+          <p className="mb-4 text-sm text-slate-500">تُحفظ البيانات تلقائيًا في هذا المتصفح. النسخة الاحتياطية تخص الفصل الحالي فقط، والاستيراد يستبدل بيانات الفصل الحالي. لإدارة الفصول افتح صفحة «فصولي».</p>
           <div className="grid gap-2 sm:grid-cols-2">
             <Button variant="success" icon={<Download size={18} />} onClick={() => { downloadBackup(state); toast({ icon: '💾', title: 'تم تصدير النسخة الاحتياطية' }); }}>💾 تصدير نسخة احتياطية</Button>
             <Button variant="secondary" icon={<Upload size={18} />} onClick={() => fileRef.current?.click()}>📥 استيراد نسخة احتياطية</Button>
@@ -228,7 +228,7 @@ export default function SettingsPage() {
           <div className="mt-5 grid gap-2 border-t border-slate-100 pt-4 sm:grid-cols-3 dark:border-white/10">
             <Button variant="outline" size="sm" onClick={() => void resetPoints()}>🔄 تصفير النقاط</Button>
             <Button variant="outline" size="sm" onClick={() => void loadDemo()}>🎮 بيانات تجريبية</Button>
-            <Button variant="danger" size="sm" onClick={() => void wipe()}>🗑️ حذف كل البيانات</Button>
+            <Button variant="danger" size="sm" onClick={() => void wipe()}>🗑️ حذف بيانات الفصل</Button>
           </div>
         </Section>
       </div>

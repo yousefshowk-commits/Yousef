@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useStore } from '../store/AppStore';
 import { Button } from '../components/ui/Button';
-import { Field, Input, Textarea } from '../components/ui/Form';
+import { ClassSetupForm, type ClassSetupValues } from '../components/classes/ClassSetupForm';
 import { Particles, Twinkles } from '../components/effects/Particles';
 import { createClassState } from '../data/demo';
 import { burst } from '../services/confetti';
@@ -11,33 +11,10 @@ import { play } from '../services/sound';
 export default function Welcome() {
   const { state, update } = useStore();
   const [step, setStep] = useState<'welcome' | 'setup'>(() => (window.location.hash.includes('setup') ? 'setup' : 'welcome'));
-  const [form, setForm] = useState({
-    teacherName: state.settings.isDemo ? '' : state.settings.teacherName,
-    schoolName: state.settings.isDemo ? '' : state.settings.schoolName,
-    className: state.settings.isDemo ? '' : state.settings.className,
-    count: '20',
-    names: '',
-  });
-  const [error, setError] = useState('');
-  const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
-
-  const create = () => {
-    if (!form.teacherName.trim() || !form.className.trim()) {
-      setError('من فضلك اكتب اسم المعلم/المعلمة واسم الفصل');
-      return;
-    }
-    const typed = form.names.split(/\n|،|,/).map((n) => n.trim()).filter(Boolean);
-    const count = Math.max(typed.length, Math.min(60, Math.max(0, Number(form.count) || 0)));
-    const names = Array.from({ length: count }, (_, i) => typed[i] ?? `طالب ${i + 1}`);
+  const create = ({ settings, names }: ClassSetupValues) => {
     play('celebrate');
     burst(0.5, 0.5, 160);
-    update((s) =>
-      createClassState(s, {
-        teacherName: form.teacherName.trim(),
-        schoolName: form.schoolName.trim() || 'مدرستي',
-        className: form.className.trim(),
-      }, names),
-    );
+    update((s) => createClassState(s, settings, names));
     window.location.hash = '#/';
   };
 
@@ -74,35 +51,17 @@ export default function Welcome() {
             <h2 className="font-display mt-2 text-3xl font-extrabold">إعداد الفصل</h2>
             <p className="text-slate-500">خطوة واحدة وتبدأ رحلة التحفيز!</p>
           </div>
-          <div className="space-y-4">
-            <Field label="اسم المعلم/المعلمة *">
-              <Input value={form.teacherName} onChange={(e) => set('teacherName', e.target.value)} placeholder="مثال: أ. مريم أحمد" autoFocus />
-            </Field>
-            <Field label="اسم المدرسة">
-              <Input value={form.schoolName} onChange={(e) => set('schoolName', e.target.value)} placeholder="مثال: مدرسة النور الابتدائية" />
-            </Field>
-            <div className="grid grid-cols-3 gap-3">
-              <Field label="اسم الفصل *" className="col-span-2">
-                <Input value={form.className} onChange={(e) => set('className', e.target.value)} placeholder="الصف الثالث - ب" />
-              </Field>
-              <Field label="عدد الطلاب">
-                <Input type="number" min={0} max={60} value={form.count} onChange={(e) => set('count', e.target.value)} />
-              </Field>
-            </div>
-            <Field label="أسماء الطلاب (اختياري)" hint="اسم في كل سطر">
-              <Textarea value={form.names} onChange={(e) => set('names', e.target.value)} placeholder={'أحمد محمد\nسارة علي\n...'} rows={4} />
-            </Field>
-            <p className="text-xs text-slate-500">إن لم تكتب الأسماء سننشئ طلابًا بأسماء مؤقتة يمكنك تعديلها لاحقًا.</p>
-            {error && <p className="rounded-xl bg-rose-50 p-3 text-sm font-bold text-rose-600 dark:bg-rose-500/10">{error}</p>}
-            <Button size="lg" className="w-full" onClick={create}>
-              ✨ إنشاء الفصل
-            </Button>
-            {state.settings.isDemo && (
-              <Button variant="ghost" className="w-full" onClick={tryDemo}>
-                🎮 جرّب النظام أولًا بالبيانات التجريبية
-              </Button>
-            )}
-          </div>
+          <ClassSetupForm
+            initial={state.settings.isDemo ? undefined : { teacherName: state.settings.teacherName, schoolName: state.settings.schoolName }}
+            onSubmit={create}
+            footer={
+              state.settings.isDemo && (
+                <Button variant="ghost" className="w-full" onClick={tryDemo}>
+                  🎮 جرّب النظام أولًا بالبيانات التجريبية
+                </Button>
+              )
+            }
+          />
         </div>
       )}
     </div>

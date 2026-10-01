@@ -20,6 +20,7 @@ import Certificate from './pages/Certificate';
 import Celebrate from './pages/Celebrate';
 import SettingsPage from './pages/Settings';
 import ClassroomMode from './pages/ClassroomMode';
+import Classes from './pages/Classes';
 
 function AppRoutes() {
   const { settings } = useAppState();
@@ -43,6 +44,7 @@ function AppRoutes() {
         <Route path="reports" element={<Reports />} />
         <Route path="certificate" element={<Certificate />} />
         <Route path="celebrate" element={<Celebrate />} />
+        <Route path="classes" element={<Classes />} />
         <Route path="settings" element={<SettingsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Route>

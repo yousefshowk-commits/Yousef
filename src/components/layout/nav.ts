@@ -1,4 +1,4 @@
-import { Award, BarChart3, Disc3, Gift, LayoutDashboard, PartyPopper, ScrollText, Settings, Target, Trophy, Users, UsersRound, type LucideIcon } from 'lucide-react';
+import { Award, School, BarChart3, Disc3, Gift, LayoutDashboard, PartyPopper, ScrollText, Settings, Target, Trophy, Users, UsersRound, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   to: string;
@@ -20,5 +20,6 @@ export const NAV: NavItem[] = [
   { to: '/reports', label: 'التقارير', icon: BarChart3, emoji: '📊' },
   { to: '/certificate', label: 'الشهادات', icon: ScrollText, emoji: '📜' },
   { to: '/celebrate', label: 'صفحة الاحتفال', icon: PartyPopper, emoji: '🎉' },
+  { to: '/classes', label: 'فصولي', icon: School, emoji: '🏫' },
   { to: '/settings', label: 'الإعدادات', icon: Settings, emoji: '⚙️' },
 ];

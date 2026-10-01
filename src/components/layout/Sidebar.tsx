@@ -1,19 +1,14 @@
 import { NavLink } from 'react-router-dom';
 import { MonitorPlay } from 'lucide-react';
 import { NAV } from './nav';
-import { useAppState } from '../../store/AppStore';
+import { ClassSwitcher } from '../classes/ClassSwitcher';
 import { cn } from '../ui/cn';
 
 export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
-  const { settings } = useAppState();
   return (
     <div className="flex h-full flex-col">
-      <div className="flex items-center gap-3 px-5 pb-4 pt-6">
-        <div className="animate-float grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-amber-300 to-orange-500 text-2xl shadow-lg shadow-orange-500/30">🏆</div>
-        <div className="min-w-0">
-          <p className="font-display truncate text-lg font-extrabold leading-tight">نظام التعزيز</p>
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{settings.className}</p>
-        </div>
+      <div className="px-3 pb-3 pt-4">
+        <ClassSwitcher onNavigate={onNavigate} />
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">
         {NAV.map((item) => (
