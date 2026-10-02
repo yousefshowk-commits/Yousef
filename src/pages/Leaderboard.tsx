@@ -79,7 +79,7 @@ export default function Leaderboard() {
                     <div className={cn('my-2', i === 1 && 'animate-glow rounded-full')}>
                       <Avatar student={p.s} size={i === 1 ? 'xl' : 'lg'} />
                     </div>
-                    <Link to={`/students/${p.s.id}`} className="font-display w-full truncate text-center text-base font-bold hover:text-violet-600 sm:text-lg">{p.s.name}</Link>
+                    <Link to={`/students/${p.s.id}`} className="font-display w-full truncate text-center text-base font-bold hover:text-indigo-600 sm:text-lg">{p.s.name}</Link>
                     <p className="font-display text-xl font-extrabold text-amber-500">{num(p.score)} ⭐</p>
                     <div className={cn('mt-2 flex w-full flex-col items-center justify-start rounded-t-3xl bg-gradient-to-b pt-3 shadow-inner', heights[i], podiumColors[i])}>
                       <span className="text-4xl">{medals[i]}</span>
@@ -101,7 +101,7 @@ export default function Leaderboard() {
                     <span className="font-display w-8 text-center text-lg font-bold text-slate-400">{i + 4}</span>
                     <Avatar student={x.s} size="sm" ring={false} />
                     <div className="min-w-0 flex-1">
-                      <Link to={`/students/${x.s.id}`} className="block truncate font-bold hover:text-violet-600">{x.s.name}</Link>
+                      <Link to={`/students/${x.s.id}`} className="block truncate font-bold hover:text-indigo-600">{x.s.name}</Link>
                       <p className="text-xs" style={{ color: info.level.color }}>{info.level.icon} {info.level.name}</p>
                     </div>
                     <span className="hidden gap-0.5 sm:flex">{badgeIcons(x.s).slice(0, 4).map((b) => <span key={b.id} title={b.name}>{b.icon}</span>)}</span>
@@ -124,7 +124,7 @@ export default function Leaderboard() {
                 <div className="flex items-center gap-3">
                   <Avatar student={s} size="md" />
                   <div className="min-w-0 flex-1">
-                    <Link to={`/students/${s.id}`} className="font-display block truncate text-lg font-bold hover:text-violet-600">{s.name}</Link>
+                    <Link to={`/students/${s.id}`} className="font-display block truncate text-lg font-bold hover:text-indigo-600">{s.name}</Link>
                     <p className="text-xs" style={{ color: info.level.color }}>{info.level.icon} {info.level.name}</p>
                   </div>
                   <span className={cn('rounded-xl px-2 py-1 text-sm font-bold', improving ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10' : diff === 0 ? 'bg-slate-100 text-slate-500 dark:bg-white/5' : 'bg-amber-50 text-amber-600 dark:bg-amber-500/10')}>
@@ -133,7 +133,7 @@ export default function Leaderboard() {
                 </div>
                 <div className="mt-3 grid grid-cols-2 gap-2 text-center text-sm">
                   <div className="rounded-xl bg-slate-50 p-2 dark:bg-white/5"><p className="text-slate-500">الأسبوع الماضي</p><p className="font-display text-lg font-bold">{num(lastWeek)}</p></div>
-                  <div className="rounded-xl bg-violet-50 p-2 dark:bg-violet-500/10"><p className="text-slate-500">هذا الأسبوع</p><p className="font-display text-lg font-bold text-violet-600 dark:text-violet-300">{num(thisWeek)}</p></div>
+                  <div className="rounded-xl bg-indigo-50 p-2 dark:bg-indigo-500/10"><p className="text-slate-500">هذا الأسبوع</p><p className="font-display text-lg font-bold text-indigo-600 dark:text-indigo-300">{num(thisWeek)}</p></div>
                 </div>
                 <div className="mt-3">
                   <ProgressBar value={info.progress} height="sm" color={info.level.color} />

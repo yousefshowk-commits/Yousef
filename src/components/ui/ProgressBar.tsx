@@ -23,7 +23,7 @@ export function ProgressBar({ value, className, barClassName, color, height = 'm
   return (
     <div className={cn('relative w-full overflow-hidden rounded-full bg-slate-200/70 dark:bg-white/10', heights[height], className)}>
       <div
-        className={cn('relative h-full rounded-full transition-[width] duration-1000 ease-out', !color && 'bg-gradient-to-l from-violet-500 via-fuchsia-500 to-amber-400', barClassName)}
+        className={cn('relative h-full rounded-full transition-[width] duration-1000 ease-out', !color && 'bg-gradient-to-l from-indigo-500 to-orange-400', barClassName)}
         style={{ width: `${w}%`, background: color }}
       >
         {striped && <div className="shine absolute inset-0 rounded-full" />}

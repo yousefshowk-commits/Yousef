@@ -19,15 +19,27 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             onClick={onNavigate}
             className={({ isActive }) =>
               cn(
-                'group flex items-center gap-3 rounded-2xl px-3.5 py-2.5 font-bold transition-all',
+                'group flex min-h-11 items-center gap-3 rounded-2xl px-2.5 py-1.5 font-bold transition-colors duration-200',
                 isActive
-                  ? 'bg-gradient-to-l from-violet-600 to-fuchsia-500 text-white shadow-lg shadow-violet-500/30'
-                  : 'text-slate-600 hover:bg-violet-50 hover:text-violet-700 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white',
+                  ? 'clay-active bg-indigo-600 text-white'
+                  : 'text-slate-600 hover:bg-indigo-50 hover:text-indigo-700 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white',
               )
             }
           >
-            <span className="text-xl transition-transform group-hover:scale-125">{item.emoji}</span>
-            <span>{item.label}</span>
+            {({ isActive }) => (
+              <>
+                <span
+                  aria-hidden
+                  className={cn(
+                    'grid h-8 w-8 shrink-0 place-items-center rounded-xl transition-colors duration-200',
+                    isActive ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-500 group-hover:bg-indigo-100 group-hover:text-indigo-600 dark:bg-white/5 dark:text-slate-400 dark:group-hover:text-indigo-300',
+                  )}
+                >
+                  <item.icon size={18} strokeWidth={2.2} />
+                </span>
+                <span>{item.label}</span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
@@ -35,9 +47,9 @@ export function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         <NavLink
           to="/classroom"
           onClick={onNavigate}
-          className="flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-amber-400 to-orange-500 px-4 py-3.5 font-bold text-white shadow-lg shadow-orange-500/30 transition hover:brightness-110 active:scale-95"
+          className="clay-cta flex min-h-12 items-center justify-center gap-2 rounded-2xl bg-orange-500 px-4 py-3 font-bold text-white transition-colors duration-200 hover:bg-orange-600 active:translate-y-px"
         >
-          <MonitorPlay size={20} /> 📺 وضع الفصل
+          <MonitorPlay size={20} aria-hidden /> وضع الفصل
         </NavLink>
       </div>
     </div>

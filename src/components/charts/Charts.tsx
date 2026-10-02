@@ -10,7 +10,7 @@ function useChartTheme() {
   return {
     dark,
     series: dark ? SERIES_DARK : SERIES_LIGHT,
-    primary: dark ? '#9085e9' : '#6d28d9',
+    primary: dark ? '#818cf8' : '#4f46e5',
     grid: dark ? 'rgba(255,255,255,.07)' : 'rgba(15,23,42,.06)',
     axis: dark ? '#94a3b8' : '#64748b',
     tooltip: {
@@ -70,7 +70,7 @@ export function ColumnChart({ data, height = 240, name = 'النقاط', highlig
         <Tooltip {...t.tooltip} cursor={{ fill: t.grid }} />
         <Bar dataKey="value" name={name} radius={[4, 4, 0, 0]} maxBarSize={44}>
           {data.map((_, i) => (
-            <Cell key={i} fill={t.series[0]} fillOpacity={highlightLast && i !== data.length - 1 ? 0.45 : 1} />
+            <Cell key={i} fill={t.primary} fillOpacity={highlightLast && i !== data.length - 1 ? 0.45 : 1} />
           ))}
         </Bar>
       </BarChart>
@@ -89,7 +89,7 @@ export function RankedBars({ data, height, name = 'العدد' }: { data: Point[
         <XAxis type="number" reversed tick={tick(t.axis)} axisLine={false} tickLine={false} allowDecimals={false} />
         <YAxis type="category" dataKey="label" orientation="right" tick={tick(t.axis)} axisLine={false} tickLine={false} width={130} />
         <Tooltip {...t.tooltip} cursor={{ fill: t.grid }} />
-        <Bar dataKey="value" name={name} fill={t.series[0]} radius={[4, 0, 0, 4]} maxBarSize={22} />
+        <Bar dataKey="value" name={name} fill={t.primary} radius={[4, 0, 0, 4]} maxBarSize={22} />
       </BarChart>
     </ResponsiveContainer></div>
   );

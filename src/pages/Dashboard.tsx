@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+import { CalendarDays, Heart, MonitorPlay, School, Star, UserRound } from 'lucide-react';
 import { useStore } from '../store/AppStore';
 import { useActions } from '../hooks/useActions';
 import { useFx } from '../store/FxProvider';
@@ -77,22 +78,32 @@ export default function Dashboard() {
       )}
 
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-l from-violet-600 via-fuchsia-500 to-orange-400 p-6 text-white shadow-xl shadow-violet-500/25 sm:p-8">
-        <div className="absolute -left-10 -top-10 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
-        <div className="absolute -bottom-16 right-1/3 h-48 w-48 rounded-full bg-amber-300/20 blur-2xl" />
+      <section className="clay-active relative overflow-hidden rounded-[2rem] bg-indigo-600 p-6 text-white sm:p-8">
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-[0.12]"
+          style={{ backgroundImage: 'radial-gradient(circle, #fff 1.5px, transparent 1.6px)', backgroundSize: '22px 22px' }}
+        />
+        <div aria-hidden className="absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-orange-400/30 blur-3xl" />
         <div className="relative flex flex-col items-center gap-6 md:flex-row md:justify-between">
           <div className="text-center md:text-start">
-            <h1 className="font-display text-3xl font-extrabold sm:text-4xl">🏆 نظام التعزيز والمكافآت</h1>
-            <p className="mt-2 text-lg text-white/90 sm:text-xl">“كل إنجاز صغير يقود إلى نجاح كبير”</p>
+            <p className="text-sm font-bold tracking-wide text-indigo-200">نظام التعزيز والمكافآت</p>
+            <h1 className="font-display mt-1 text-3xl font-extrabold leading-tight [text-wrap:balance] sm:text-4xl">“كل إنجاز صغير يقود إلى نجاح كبير”</h1>
             <div className="mt-4 flex flex-wrap justify-center gap-2 text-sm md:justify-start">
-              <span className="rounded-full bg-white/20 px-3 py-1.5 font-bold backdrop-blur">🏫 {settings.className}</span>
-              <span className="rounded-full bg-white/20 px-3 py-1.5 font-bold backdrop-blur">👩‍🏫 {settings.teacherName}</span>
-              <span className="rounded-full bg-white/20 px-3 py-1.5 font-bold backdrop-blur">📅 {formatDate(Date.now())}</span>
+              <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 font-bold"><School size={15} aria-hidden /> {settings.className}</span>
+              <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 font-bold"><UserRound size={15} aria-hidden /> {settings.teacherName}</span>
+              <span className="flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1.5 font-bold"><CalendarDays size={15} aria-hidden /> {formatDate(Date.now())}</span>
             </div>
-            <div className="mt-5 flex flex-wrap justify-center gap-2 md:justify-start">
-              <Link to="/students" className="rounded-2xl bg-white px-5 py-3 font-bold text-violet-700 shadow-lg transition hover:scale-105 active:scale-95">⭐ منح نقاط</Link>
-              <Link to="/classroom" className="rounded-2xl bg-white/20 px-5 py-3 font-bold backdrop-blur transition hover:bg-white/30">📺 وضع الفصل</Link>
-              <button onClick={() => encourage()} className="rounded-2xl bg-white/20 px-5 py-3 font-bold backdrop-blur transition hover:bg-white/30">❤️ تعزيز إيجابي</button>
+            <div className="mt-6 flex flex-wrap justify-center gap-2 md:justify-start">
+              <Link to="/students" className="clay-cta flex min-h-12 items-center gap-2 rounded-2xl bg-orange-500 px-5 font-bold text-white transition-colors duration-200 hover:bg-orange-600 active:translate-y-px">
+                <Star size={18} aria-hidden /> منح نقاط
+              </Link>
+              <Link to="/classroom" className="flex min-h-12 items-center gap-2 rounded-2xl bg-white/15 px-5 font-bold transition-colors duration-200 hover:bg-white/25">
+                <MonitorPlay size={18} aria-hidden /> وضع الفصل
+              </Link>
+              <button onClick={() => encourage()} className="flex min-h-12 items-center gap-2 rounded-2xl bg-white/15 px-5 font-bold transition-colors duration-200 hover:bg-white/25">
+                <Heart size={18} aria-hidden /> تعزيز إيجابي
+              </button>
             </div>
           </div>
           <HeroIllustration className="h-40 w-52 shrink-0 drop-shadow-xl sm:h-48 sm:w-64" />
@@ -101,10 +112,10 @@ export default function Dashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-        <StatCard icon="👦" label="عدد الطلاب" value={num(state.students.length)} gradient="from-sky-300 to-blue-500" hint={`${state.groups.length} مجموعات`} />
-        <StatCard icon="⭐" label="مجموع النقاط الموزعة" value={num(totalDistributed(state))} gradient="from-amber-300 to-orange-500" hint={`اليوم: +${num(todayPoints)}`} />
-        <StatCard icon="🎁" label="المكافآت الممنوحة" value={num(totalRedemptions(state))} gradient="from-pink-300 to-rose-500" />
-        <StatCard icon="🏅" label="الشارات المكتسبة" value={num(totalBadges(state))} gradient="from-violet-300 to-purple-600" />
+        <StatCard icon="👦" label="عدد الطلاب" value={num(state.students.length)} hint={`${state.groups.length} مجموعات`} />
+        <StatCard icon="⭐" label="مجموع النقاط الموزعة" value={num(totalDistributed(state))} hint={`اليوم: +${num(todayPoints)}`} />
+        <StatCard icon="🎁" label="المكافآت الممنوحة" value={num(totalRedemptions(state))} />
+        <StatCard icon="🏅" label="الشارات المكتسبة" value={num(totalBadges(state))} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -137,7 +148,7 @@ export default function Dashboard() {
 
         {/* Class challenge */}
         <Card>
-          <CardTitle icon="🎯" title={state.challenge.title} action={<Link to="/challenge" className="text-sm font-bold text-violet-600 dark:text-violet-300">التفاصيل ←</Link>} />
+          <CardTitle icon="🎯" title={state.challenge.title} action={<Link to="/challenge" className="text-sm font-bold text-indigo-600 dark:text-indigo-300">التفاصيل ←</Link>} />
           <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
             إذا وصل الفصل إلى <b>{num(state.challenge.target)}</b> نقطة يحصل الجميع على: {state.challenge.reward}
           </p>
@@ -151,7 +162,7 @@ export default function Dashboard() {
         {/* Daily challenge */}
         <Card>
           <CardTitle icon="📅" title="تحدي اليوم" />
-          <div className="mb-3 flex items-center gap-3 rounded-2xl bg-violet-50 p-3 dark:bg-violet-500/10">
+          <div className="mb-3 flex items-center gap-3 rounded-2xl bg-indigo-50 p-3 dark:bg-indigo-500/10">
             <span className="animate-float text-4xl">{daily.icon}</span>
             <p className="font-bold">{daily.text}</p>
           </div>
@@ -169,7 +180,7 @@ export default function Dashboard() {
 
       <div className="grid gap-4 lg:grid-cols-5">
         <Card className="lg:col-span-3">
-          <CardTitle icon="📈" title="تقدم الفصل — آخر 14 يومًا" action={<Link to="/reports" className="text-sm font-bold text-violet-600 dark:text-violet-300">التقارير ←</Link>} />
+          <CardTitle icon="📈" title="تقدم الفصل — آخر 14 يومًا" action={<Link to="/reports" className="text-sm font-bold text-indigo-600 dark:text-indigo-300">التقارير ←</Link>} />
           <TrendChart data={series} height={260} name="نقاط اليوم" />
         </Card>
         <Card className="lg:col-span-2">

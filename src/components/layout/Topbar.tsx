@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Menu, Moon, MonitorPlay, Sun, Volume2, VolumeX } from 'lucide-react';
+import { Menu, Moon, MonitorPlay, Sun, UserRound, Volume2, VolumeX } from 'lucide-react';
 import { useStore } from '../../store/AppStore';
 import { NotificationBell } from './NotificationBell';
 
@@ -18,7 +18,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           <p className="font-display truncate font-bold leading-tight sm:text-lg">
             {settings.className} <span className="hidden text-slate-400 sm:inline">•</span> <span className="hidden text-slate-500 sm:inline dark:text-slate-400">{settings.schoolName}</span>
           </p>
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">👩‍🏫 {settings.teacherName} — {settings.term}</p>
+          <p className="flex items-center gap-1 truncate text-xs text-slate-500 dark:text-slate-400"><UserRound size={13} aria-hidden className="shrink-0" /> {settings.teacherName} — {settings.term}</p>
         </div>
         <button
           onClick={() => set({ sound: !settings.sound })}
@@ -37,7 +37,7 @@ export function Topbar({ onMenu }: { onMenu: () => void }) {
           {settings.theme === 'dark' ? <Sun size={21} className="text-amber-400" /> : <Moon size={21} />}
         </button>
         <NotificationBell />
-        <Link to="/classroom" className="hidden h-11 items-center gap-2 rounded-2xl bg-gradient-to-l from-amber-400 to-orange-500 px-4 font-bold text-white shadow-lg shadow-orange-500/25 transition hover:brightness-110 sm:flex">
+        <Link to="/classroom" className="clay-cta hidden h-11 items-center gap-2 rounded-2xl bg-orange-500 px-4 font-bold text-white transition-colors duration-200 hover:bg-orange-600 sm:flex">
           <MonitorPlay size={18} /> وضع الفصل
         </Link>
       </div>

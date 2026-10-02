@@ -124,19 +124,19 @@ export function AwardModal({ studentIds, onClose }: { studentIds: ID[] | null; o
             key={r.id}
             disabled={!effective}
             onClick={(e) => give(r.id, e)}
-            className="flex items-center gap-2 rounded-2xl border-2 border-slate-100 bg-white p-3 text-start font-bold transition hover:-translate-y-0.5 hover:border-violet-300 hover:shadow-lg active:scale-95 disabled:opacity-40 dark:border-white/10 dark:bg-slate-800"
+            className="flex items-center gap-2 rounded-2xl border-2 border-slate-100 bg-white p-3 text-start font-bold transition hover:-translate-y-0.5 hover:border-indigo-300 hover:shadow-lg active:scale-95 disabled:opacity-40 dark:border-white/10 dark:bg-slate-800"
           >
             <span className="text-2xl">{r.icon}</span>
             <span className="leading-tight">{r.label}</span>
           </button>
         ))}
-        <button onClick={() => setAdding((v) => !v)} className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-violet-300 p-3 font-bold text-violet-600 hover:bg-violet-50 dark:border-violet-400/40 dark:text-violet-300 dark:hover:bg-violet-500/10">
+        <button onClick={() => setAdding((v) => !v)} className="flex items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-indigo-300 p-3 font-bold text-indigo-600 hover:bg-indigo-50 dark:border-indigo-400/40 dark:text-indigo-300 dark:hover:bg-indigo-500/10">
           <Plus size={18} /> سبب جديد
         </button>
       </div>
 
       {adding && (
-        <div className="animate-slide-up mt-4 space-y-3 rounded-2xl bg-violet-50 p-4 dark:bg-violet-500/10">
+        <div className="animate-slide-up mt-4 space-y-3 rounded-2xl bg-indigo-50 p-4 dark:bg-indigo-500/10">
           <Input placeholder="اسم السبب، مثال: حفظ السورة" value={newReason.label} onChange={(e) => setNewReason((n) => ({ ...n, label: e.target.value }))} onKeyDown={(e) => e.key === 'Enter' && saveReason()} autoFocus />
           <EmojiPicker value={newReason.icon} onChange={(icon) => setNewReason((n) => ({ ...n, icon }))} />
           <Button onClick={saveReason} disabled={!newReason.label.trim()}>

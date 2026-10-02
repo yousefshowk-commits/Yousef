@@ -60,7 +60,7 @@ export function CelebrationOverlay({ data, onClose }: { data: CelebrationData; o
           {data.title}
         </h1>
         {data.subtitle && (
-          <p className="animate-slide-up mt-4 max-w-3xl text-xl font-bold text-violet-100 sm:text-3xl" style={{ animationDelay: '.45s' }}>
+          <p className="animate-slide-up mt-4 max-w-3xl text-xl font-bold text-indigo-100 sm:text-3xl" style={{ animationDelay: '.45s' }}>
             {data.subtitle}
           </p>
         )}
@@ -76,7 +76,7 @@ export function CelebrationOverlay({ data, onClose }: { data: CelebrationData; o
             ))}
           </div>
         )}
-        <p className="mt-10 text-sm text-violet-200/80">اضغط في أي مكان للإغلاق</p>
+        <p className="mt-10 text-sm text-indigo-200/80">اضغط في أي مكان للإغلاق</p>
       </div>
     </div>,
     document.body,

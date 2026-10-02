@@ -12,7 +12,7 @@ export function StudentPicker({ students, value, onChange, className }: { studen
     <div className={className}>
       <div className="relative mb-3">
         <Search size={18} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
-        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن طالب…" className="w-full rounded-2xl border-2 border-slate-200 bg-white/80 py-2.5 pe-3 ps-10 outline-none focus:border-violet-400 dark:border-white/10 dark:bg-slate-800/70" />
+        <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="ابحث عن طالب…" className="w-full rounded-2xl border-2 border-slate-200 bg-white/80 py-2.5 pe-3 ps-10 outline-none focus:border-indigo-400 dark:border-white/10 dark:bg-slate-800/70" />
       </div>
       <div className="grid max-h-72 grid-cols-3 gap-2 overflow-y-auto p-1 sm:grid-cols-4">
         {list.map((s) => (
@@ -20,7 +20,7 @@ export function StudentPicker({ students, value, onChange, className }: { studen
             key={s.id}
             type="button"
             onClick={() => onChange(s.id)}
-            className={cn('flex flex-col items-center gap-1 rounded-2xl p-2 transition hover:bg-violet-50 dark:hover:bg-white/5', value === s.id && 'bg-violet-100 ring-2 ring-violet-500 dark:bg-violet-500/20')}
+            className={cn('flex flex-col items-center gap-1 rounded-2xl p-2 transition hover:bg-indigo-50 dark:hover:bg-white/5', value === s.id && 'bg-indigo-100 ring-2 ring-indigo-500 dark:bg-indigo-500/20')}
           >
             <Avatar student={s} size="sm" ring={false} />
             <span className="w-full truncate text-xs font-bold">{s.name}</span>

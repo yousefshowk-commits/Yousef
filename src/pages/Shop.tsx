@@ -85,7 +85,7 @@ export default function Shop() {
       />
 
       {/* Current shopper */}
-      <Card className="flex flex-wrap items-center gap-4 bg-gradient-to-l from-pink-50/80 to-violet-50/80 dark:from-pink-500/5 dark:to-violet-500/5">
+      <Card className="flex flex-wrap items-center gap-4 bg-gradient-to-l from-pink-50/80 to-indigo-50/80 dark:from-pink-500/5 dark:to-indigo-500/5">
         {student ? (
           <>
             <Avatar student={student} size="lg" />
@@ -129,7 +129,7 @@ export default function Shop() {
               {student && !r.custom && student.points < r.cost && (
                 <div className="relative mt-1">
                   <ProgressBar value={pct(student.points, r.cost)} height="xs" />
-                  <p className="mt-1 text-[11px] text-slate-400">باقي {num(r.cost - student.points)} نقطة</p>
+                  <p className="mt-1 text-xs text-slate-400">باقي {num(r.cost - student.points)} نقطة</p>
                 </div>
               )}
               <Button className="relative mt-3" variant={can ? 'primary' : 'secondary'} disabled={!r.active || (!!student && !can)} onClick={() => startRedeem(r)}>
@@ -202,7 +202,7 @@ export default function Shop() {
             <EmojiPicker value={editing.icon} onChange={(icon) => setEditing({ ...editing, icon })} />
             <div className="flex flex-wrap gap-2">
               {COLORS.map((c) => (
-                <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-violet-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
+                <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-indigo-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
               ))}
             </div>
             <Toggle checked={editing.active} onChange={(active) => setEditing({ ...editing, active })} label="متاحة في المتجر" />

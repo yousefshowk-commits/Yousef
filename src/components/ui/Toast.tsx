@@ -20,7 +20,7 @@ const ToastContext = createContext<((t: ToastOptions) => void) | null>(null);
 
 const variantStyles: Record<NonNullable<ToastOptions['variant']>, string> = {
   success: 'from-emerald-500 to-teal-500',
-  info: 'from-violet-500 to-fuchsia-500',
+  info: 'from-indigo-500 to-indigo-600',
   error: 'from-rose-500 to-red-500',
   badge: 'from-amber-400 to-orange-500',
   level: 'from-sky-500 to-indigo-500',
@@ -49,7 +49,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           {items.map((t) => (
             <div
               key={t.id}
-              className="animate-slide-up pointer-events-auto flex w-full max-w-md items-center gap-3 overflow-hidden rounded-2xl border border-white/70 bg-white/95 p-3 pe-2 shadow-xl shadow-violet-900/10 backdrop-blur-xl dark:border-white/10 dark:bg-slate-800/95"
+              className="animate-slide-up pointer-events-auto flex w-full max-w-md items-center gap-3 overflow-hidden rounded-2xl border border-white/70 bg-white/95 p-3 pe-2 shadow-xl shadow-indigo-900/10 backdrop-blur-xl dark:border-white/10 dark:bg-slate-800/95"
               role="status"
             >
               <div className={cn('grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-2xl shadow-inner', variantStyles[t.variant ?? 'success'])}>
@@ -61,7 +61,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               </div>
               {t.action && (
                 <button
-                  className="rounded-xl bg-violet-100 px-3 py-2 text-sm font-bold text-violet-700 transition hover:bg-violet-200 dark:bg-violet-500/20 dark:text-violet-200"
+                  className="rounded-xl bg-indigo-100 px-3 py-2 text-sm font-bold text-indigo-700 transition hover:bg-indigo-200 dark:bg-indigo-500/20 dark:text-indigo-200"
                   onClick={() => {
                     t.action!.onClick();
                     dismiss(t.id);

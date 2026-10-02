@@ -104,7 +104,7 @@ export default function Students() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="ابحث عن طالب بالاسم…"
-            className="h-11 w-full rounded-2xl border-2 border-transparent bg-white/80 pe-3 ps-11 outline-none focus:border-violet-400 dark:bg-slate-800/70"
+            className="h-11 w-full rounded-2xl border-2 border-transparent bg-white/80 pe-3 ps-11 outline-none focus:border-indigo-400 dark:bg-slate-800/70"
           />
         </div>
         <div className="flex gap-2">
@@ -132,7 +132,7 @@ export default function Students() {
           <button
             key={c.id}
             onClick={() => setGroup(c.id)}
-            className={cn('rounded-full px-4 py-2 text-sm font-bold transition', group === c.id ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/30' : 'bg-white/70 text-slate-600 hover:bg-white dark:bg-white/5 dark:text-slate-300')}
+            className={cn('rounded-full px-4 py-2 text-sm font-bold transition', group === c.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/30' : 'bg-white/70 text-slate-600 hover:bg-white dark:bg-white/5 dark:text-slate-300')}
           >
             {c.emoji} {c.label}
           </button>
@@ -147,7 +147,7 @@ export default function Students() {
           action={!state.students.length && <Button onClick={() => setForm({ open: true })}>➕ إضافة أول طالب</Button>}
         />
       ) : (
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 min-[440px]:grid-cols-2 sm:gap-4 md:grid-cols-3 xl:grid-cols-4">
           {list.map((s) => (
             <StudentCard
               key={s.id}

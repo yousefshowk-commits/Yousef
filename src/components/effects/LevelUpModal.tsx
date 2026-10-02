@@ -22,10 +22,10 @@ export function LevelUpModal({ student, level, onClose }: { student: Student; le
           </div>
         </div>
         <h2 className="font-display relative text-3xl font-extrabold">مبارك يا {firstName(student.name)}!</h2>
-        <p className="relative mt-2 text-lg text-violet-100">
+        <p className="relative mt-2 text-lg text-indigo-100">
           {g(student.gender, 'لقد وصلت', 'لقد وصلتِ')} إلى مستوى <b className="text-amber-200">{level.name}</b> {level.icon}
         </p>
-        <p className="relative mt-1 text-sm text-violet-200">المستوى {level.id}</p>
+        <p className="relative mt-1 text-sm text-indigo-200">المستوى {level.id}</p>
         <Button size="lg" variant="warning" className="relative mt-7 w-full" onClick={onClose}>
           رائع! 🚀
         </Button>

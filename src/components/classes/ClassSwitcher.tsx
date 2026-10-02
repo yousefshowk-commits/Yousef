@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronDown, Plus } from 'lucide-react';
+import { Check, ChevronDown, Plus, Trophy } from 'lucide-react';
 import { useStore } from '../../store/AppStore';
 import { cn } from '../ui/cn';
 
@@ -30,12 +30,12 @@ export function ClassSwitcher({ onNavigate }: { onNavigate?: () => void }) {
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
         aria-label="تبديل الفصل"
-        className="flex w-full items-center gap-3 rounded-2xl p-2 text-start transition hover:bg-violet-50 dark:hover:bg-white/5"
+        className="flex w-full items-center gap-3 rounded-2xl p-2 text-start transition hover:bg-indigo-50 dark:hover:bg-white/5"
       >
-        <span className="animate-float grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-amber-300 to-orange-500 text-2xl shadow-lg shadow-orange-500/30">🏆</span>
+        <span aria-hidden className="clay-cta grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-orange-500 text-white"><Trophy size={24} strokeWidth={2.2} /></span>
         <span className="min-w-0 flex-1">
           <span className="font-display block truncate text-lg font-extrabold leading-tight">نظام التعزيز</span>
-          <span className="block truncate text-xs font-bold text-violet-600 dark:text-violet-300">{state.settings.className}</span>
+          <span className="block truncate text-xs font-bold text-indigo-600 dark:text-indigo-300">{state.settings.className}</span>
         </span>
         <ChevronDown size={18} className={cn('shrink-0 text-slate-400 transition', open && 'rotate-180')} />
       </button>
@@ -53,19 +53,19 @@ export function ClassSwitcher({ onNavigate }: { onNavigate?: () => void }) {
                     switchClass(c.id);
                     go('/');
                   }}
-                  className={cn('flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-start transition', active ? 'bg-violet-50 dark:bg-violet-500/15' : 'hover:bg-slate-50 dark:hover:bg-white/5')}
+                  className={cn('flex w-full items-center gap-2 rounded-xl px-2.5 py-2 text-start transition', active ? 'bg-indigo-50 dark:bg-indigo-500/15' : 'hover:bg-slate-50 dark:hover:bg-white/5')}
                 >
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-bold">{active ? state.settings.className : c.name}</span>
                     <span className="block text-xs text-slate-500">{active ? state.students.length : c.students} طالب</span>
                   </span>
-                  {active && <Check size={16} className="shrink-0 text-violet-600 dark:text-violet-300" />}
+                  {active && <Check size={16} className="shrink-0 text-indigo-600 dark:text-indigo-300" />}
                 </button>
               );
             })}
           </div>
           <div className="grid grid-cols-2 gap-1 border-t border-slate-100 p-1.5 dark:border-white/10">
-            <button onClick={() => go('/classes')} className="flex items-center justify-center gap-1 rounded-xl py-2 text-sm font-bold text-violet-700 hover:bg-violet-50 dark:text-violet-300 dark:hover:bg-white/5">
+            <button onClick={() => go('/classes')} className="flex items-center justify-center gap-1 rounded-xl py-2 text-sm font-bold text-indigo-700 hover:bg-indigo-50 dark:text-indigo-300 dark:hover:bg-white/5">
               <Plus size={16} /> فصل جديد
             </button>
             <button onClick={() => go('/classes')} className="rounded-xl py-2 text-sm font-bold text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/5">

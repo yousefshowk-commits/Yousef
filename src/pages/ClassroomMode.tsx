@@ -49,7 +49,7 @@ export default function ClassroomMode() {
   };
 
   return (
-    <div className={cn('fixed inset-0 z-40 flex flex-col overflow-hidden', dark ? 'bg-[#0b1020] text-white' : 'bg-gradient-to-br from-violet-100 via-pink-50 to-amber-50 text-slate-800')}>
+    <div className={cn('fixed inset-0 z-40 flex flex-col overflow-hidden', dark ? 'bg-[#0b1020] text-white' : 'bg-gradient-to-br from-indigo-100 via-pink-50 to-amber-50 text-slate-800')}>
       {/* Top bar */}
       <div className="flex flex-wrap items-center gap-2 px-3 pt-3 sm:px-5">
         <div className="me-auto flex items-center gap-2">
@@ -83,7 +83,7 @@ export default function ClassroomMode() {
           <button
             key={r.id}
             onClick={() => setReasonId(r.id)}
-            className={cn('flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-bold transition', reasonId === r.id ? 'bg-violet-600 text-white shadow-lg shadow-violet-500/40' : 'bg-white/70 dark:bg-white/10')}
+            className={cn('flex shrink-0 items-center gap-1.5 rounded-full px-4 py-2.5 text-base font-bold transition', reasonId === r.id ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-500/40' : 'bg-white/70 dark:bg-white/10')}
           >
             <span className="text-xl">{r.icon}</span> {r.label}
           </button>
@@ -99,7 +99,7 @@ export default function ClassroomMode() {
               <button
                 key={s.id}
                 onClick={() => setActive(s.id)}
-                className="group flex flex-col items-center rounded-[1.75rem] bg-white/85 p-3 shadow-lg shadow-violet-900/5 transition hover:-translate-y-1 hover:shadow-xl active:scale-95 sm:p-4 dark:bg-white/10"
+                className="group flex flex-col items-center rounded-[1.75rem] bg-white/85 p-3 shadow-lg shadow-indigo-900/5 transition hover:-translate-y-1 hover:shadow-xl active:scale-95 sm:p-4 dark:bg-white/10"
               >
                 <div className="relative">
                   <Avatar student={s} size="lg" className="transition group-hover:scale-110" />
@@ -148,7 +148,7 @@ export default function ClassroomMode() {
                   setActive(null);
                   fx.celebrate({ title: `🏆 مبروك يا ${firstName(st.name)}! 🏆`, subtitle: g(st.gender, 'أنت نجم الفصل ⭐', 'أنتِ نجمة الفصل ⭐'), student: st, badges: state.badges.filter((b) => st.badges.some((x) => x.badgeId === b.id)).slice(0, 6) });
                 }}
-                className="rounded-2xl bg-violet-100 py-3 text-lg font-bold text-violet-700 dark:bg-violet-500/15 dark:text-violet-200"
+                className="rounded-2xl bg-indigo-100 py-3 text-lg font-bold text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-200"
               >
                 🎉 احتفل
               </button>

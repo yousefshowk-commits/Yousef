@@ -69,12 +69,12 @@ export default function ChallengePage() {
       <PageHeader icon="🎯" title="تحدي الفصل" subtitle="Classroom Challenge — نعمل معًا لهدف واحد!" />
 
       <Card className="relative overflow-hidden p-6 text-center sm:p-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 via-fuchsia-500/5 to-amber-400/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-orange-400/10" />
         <div className="relative">
           <div className="animate-float mx-auto text-7xl">{ch.completedAt ? '🏆' : '🎯'}</div>
           <h2 className="font-display mt-2 text-3xl font-extrabold sm:text-4xl">{ch.title}</h2>
           <p className="mx-auto mt-2 max-w-2xl text-lg text-slate-600 dark:text-slate-300">
-            “إذا وصل الفصل إلى <b className="text-violet-600 dark:text-violet-300">{num(ch.target)}</b> نقطة، يحصل الجميع على: <b>{ch.reward}</b>”
+            “إذا وصل الفصل إلى <b className="text-indigo-600 dark:text-indigo-300">{num(ch.target)}</b> نقطة، يحصل الجميع على: <b>{ch.reward}</b>”
           </p>
           <p className="mt-1 text-sm text-slate-400">منذ {formatDate(ch.startAt)}</p>
           <div className="mx-auto mt-8 max-w-3xl">

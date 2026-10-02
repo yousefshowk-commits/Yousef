@@ -70,9 +70,22 @@
 
 :root {
   color-scheme: light;
+  /* Clay design tokens — indigo primary, orange action, soft indigo ground. */
+  --bg: #eef2ff;
+  --surface: #ffffff;
+  --surface-border: #e0e7ff;
+  --clay-shadow: 0 1px 0 0 rgb(255 255 255 / 0.9) inset, 0 -3px 0 0 rgb(79 70 229 / 0.06) inset, 0 12px 28px -14px rgb(30 27 75 / 0.22), 0 2px 6px -2px rgb(30 27 75 / 0.06);
+  --clay-shadow-hover: 0 1px 0 0 rgb(255 255 255 / 0.9) inset, 0 -3px 0 0 rgb(79 70 229 / 0.08) inset, 0 18px 36px -16px rgb(30 27 75 / 0.3), 0 3px 8px -2px rgb(30 27 75 / 0.08);
+  --focus: #4f46e5;
 }
 .dark {
   color-scheme: dark;
+  --bg: #0b1020;
+  --surface: #141a33;
+  --surface-border: rgb(255 255 255 / 0.07);
+  --clay-shadow: 0 1px 0 0 rgb(255 255 255 / 0.05) inset, 0 -3px 0 0 rgb(0 0 0 / 0.25) inset, 0 12px 28px -14px rgb(0 0 0 / 0.7);
+  --clay-shadow-hover: 0 1px 0 0 rgb(255 255 255 / 0.07) inset, 0 -3px 0 0 rgb(0 0 0 / 0.25) inset, 0 18px 36px -16px rgb(0 0 0 / 0.8);
+  --focus: #a5b4fc;
 }
 
 html,
@@ -82,27 +95,43 @@ body,
 }
 
 body {
-  @apply font-sans text-slate-800 antialiased dark:text-slate-100;
+  @apply font-sans text-base text-slate-800 antialiased dark:text-slate-100;
   background:
-    radial-gradient(1200px 600px at 100% -10%, rgb(196 181 253 / 0.45), transparent 60%),
-    radial-gradient(900px 500px at -10% 10%, rgb(251 207 232 / 0.45), transparent 60%),
-    radial-gradient(900px 600px at 50% 110%, rgb(167 243 208 / 0.35), transparent 60%),
-    #f7f6fd;
+    radial-gradient(900px 500px at 100% -10%, rgb(199 210 254 / 0.7), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgb(254 215 170 / 0.45), transparent 60%),
+    var(--bg);
   background-attachment: fixed;
+  line-height: 1.6;
   -webkit-tap-highlight-color: transparent;
 }
 
 .dark body {
   background:
-    radial-gradient(1200px 600px at 100% -10%, rgb(91 33 182 / 0.35), transparent 60%),
-    radial-gradient(900px 500px at -10% 10%, rgb(157 23 77 / 0.25), transparent 60%),
-    radial-gradient(900px 600px at 50% 110%, rgb(6 95 70 / 0.25), transparent 60%),
-    #0b1020;
+    radial-gradient(900px 500px at 100% -10%, rgb(67 56 202 / 0.28), transparent 60%),
+    radial-gradient(700px 420px at -10% 110%, rgb(194 65 12 / 0.12), transparent 60%),
+    var(--bg);
   background-attachment: fixed;
 }
 
+/* Clay surface: solid card, hairline indigo border, soft inner highlight + outer shadow. */
 @utility glass {
-  @apply border border-white/70 bg-white/75 shadow-[0_8px_30px_-12px_rgb(76_29_149/0.18)] backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/60 dark:shadow-[0_8px_30px_-12px_rgb(0_0_0/0.6)];
+  background: var(--surface);
+  border: 2px solid var(--surface-border);
+  box-shadow: var(--clay-shadow);
+}
+
+@utility clay-tile {
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.7) inset, 0 -2px 0 0 rgb(0 0 0 / 0.06) inset;
+}
+
+/* Raised primary element (active nav item). */
+@utility clay-active {
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.25) inset, 0 -3px 0 0 rgb(0 0 0 / 0.18) inset, 0 8px 18px -8px rgb(79 70 229 / 0.6);
+}
+
+/* Orange call-to-action with a chunky pressed edge. */
+@utility clay-cta {
+  box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.3) inset, 0 -4px 0 0 rgb(154 52 18 / 0.35) inset, 0 10px 20px -10px rgb(234 88 12 / 0.7);
 }
 
 @utility font-display {
@@ -110,13 +139,30 @@ body {
 }
 
 @utility text-gradient {
-  @apply bg-gradient-to-l from-violet-600 via-fuchsia-500 to-amber-500 bg-clip-text text-transparent dark:from-violet-300 dark:via-fuchsia-300 dark:to-amber-300;
+  @apply bg-gradient-to-l from-indigo-600 to-orange-500 bg-clip-text text-transparent dark:from-indigo-300 dark:to-orange-300;
 }
 
 @utility shine {
   background-image: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.55) 50%, transparent 70%);
   background-size: 200% 100%;
   animation: var(--animate-shine);
+}
+
+/* Interactive affordances */
+button:not(:disabled),
+[role='button'],
+a[href],
+select,
+label[for],
+input[type='color'] {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 
 /* Disable decorative motion when the teacher turns animations off or the OS asks for reduced motion. */
@@ -131,14 +177,17 @@ body {
   *,
   *::before,
   *::after {
+    animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
 /* Scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: rgb(139 92 246 / 0.35) transparent;
+  scrollbar-color: rgb(99 102 241 / 0.35) transparent;
 }
 
 input[type='number']::-webkit-inner-spin-button {

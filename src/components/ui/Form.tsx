@@ -2,7 +2,7 @@ import type { InputHTMLAttributes, ReactNode, SelectHTMLAttributes, TextareaHTML
 import { cn } from './cn';
 
 const field =
-  'w-full rounded-2xl border-2 border-slate-200 bg-white/80 px-4 py-2.5 text-[15px] outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:ring-4 focus:ring-violet-400/15 dark:border-white/10 dark:bg-slate-800/70';
+  'w-full rounded-2xl border-2 border-slate-200 bg-white/80 px-4 py-2.5 text-[15px] outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-4 focus:ring-indigo-400/15 dark:border-white/10 dark:bg-slate-800/70';
 
 export function Label({ children, hint }: { children: ReactNode; hint?: ReactNode }) {
   return (
@@ -39,7 +39,7 @@ export function Toggle({ checked, onChange, label, description }: { checked: boo
         <span className="block font-bold">{label}</span>
         {description && <span className="block text-sm text-slate-500 dark:text-slate-400">{description}</span>}
       </span>
-      <span className={cn('relative h-8 w-14 shrink-0 rounded-full transition-colors', checked ? 'bg-gradient-to-l from-violet-600 to-fuchsia-500' : 'bg-slate-300 dark:bg-slate-600')}>
+      <span className={cn('relative h-8 w-14 shrink-0 rounded-full transition-colors', checked ? 'bg-indigo-600' : 'bg-slate-300 dark:bg-slate-600')}>
         <span className={cn('absolute top-1 h-6 w-6 rounded-full bg-white shadow transition-all', checked ? 'left-1' : 'left-7')} />
       </span>
     </button>
@@ -56,7 +56,7 @@ export function Segmented<T extends string>({ value, onChange, options, classNam
           onClick={() => onChange(o.value)}
           className={cn(
             'rounded-xl px-3.5 py-2 text-sm font-bold transition',
-            value === o.value ? 'bg-white text-violet-700 shadow dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white',
+            value === o.value ? 'bg-white text-indigo-700 shadow dark:bg-slate-700 dark:text-white' : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white',
           )}
         >
           {o.label}

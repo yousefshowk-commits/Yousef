@@ -127,7 +127,7 @@ export default function Badges() {
               <p className="mb-1.5 text-sm font-bold text-slate-600 dark:text-slate-300">اللون</p>
               <div className="flex flex-wrap gap-2">
                 {COLORS.map((c) => (
-                  <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-violet-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
+                  <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-indigo-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
                 ))}
               </div>
             </div>

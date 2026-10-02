@@ -24,7 +24,7 @@ export default function Welcome() {
   };
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_30%_20%,#a78bfa,transparent_50%),radial-gradient(circle_at_80%_80%,#f472b6,transparent_45%),linear-gradient(160deg,#4c1d95,#1e1b4b)] p-4 text-white">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_30%_20%,#818cf8,transparent_50%),radial-gradient(circle_at_80%_85%,rgba(251,146,60,.45),transparent_45%),linear-gradient(160deg,#4338ca,#1e1b4b)] p-4 text-white">
       <Twinkles count={30} />
       <Particles count={18} symbols={['⭐', '🏅', '🎁', '🚀', '💎', '🏆']} />
 
@@ -34,7 +34,7 @@ export default function Welcome() {
             <div className="animate-glow text-[8rem] leading-none sm:text-[10rem]">🏆</div>
           </div>
           <h1 className="font-display text-4xl font-extrabold leading-tight sm:text-6xl">أهلاً بك في نظام التعزيز والمكافآت</h1>
-          <p className="mt-4 text-xl text-violet-100 sm:text-2xl">“حوّل الإنجازات الصغيرة إلى رحلة مليئة بالنجاح.”</p>
+          <p className="mt-4 text-xl text-indigo-100 sm:text-2xl">“حوّل الإنجازات الصغيرة إلى رحلة مليئة بالنجاح.”</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm">
             {['⭐ نقاط ونجوم', '🏅 شارات إنجاز', '🎁 متجر مكافآت', '🎡 عجلة الحظ', '📊 تقارير ذكية'].map((f) => (
               <span key={f} className="rounded-full bg-white/15 px-4 py-2 font-bold backdrop-blur">{f}</span>

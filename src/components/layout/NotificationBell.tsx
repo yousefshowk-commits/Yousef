@@ -54,7 +54,7 @@ export function NotificationBell() {
     <div className="relative" ref={ref}>
       <button onClick={toggle} className="relative grid h-11 w-11 place-items-center rounded-2xl text-slate-600 transition hover:bg-slate-900/5 dark:text-slate-300 dark:hover:bg-white/10" aria-label="الإشعارات">
         <Bell size={21} className={cn(unread > 0 && 'animate-wiggle')} />
-        {unread > 0 && <span className="absolute -top-0.5 -left-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-[11px] font-bold text-white" dir="ltr">{unread > 9 ? '9+' : unread}</span>}
+        {unread > 0 && <span className="absolute -top-0.5 -left-0.5 grid h-5 min-w-5 place-items-center rounded-full bg-rose-500 px-1 text-xs font-bold text-white" dir="ltr">{unread > 9 ? '9+' : unread}</span>}
       </button>
       {open && (
         <div className="animate-slide-up absolute left-0 top-13 z-50 w-[min(22rem,calc(100vw-1.5rem))] overflow-hidden rounded-3xl border border-white/60 bg-white shadow-2xl dark:border-white/10 dark:bg-slate-900">
@@ -68,7 +68,7 @@ export function NotificationBell() {
                   <p className="truncate text-sm font-bold">{e.studentId ? names.get(e.studentId) : 'الفصل'}</p>
                   <p className="truncate text-sm text-slate-500 dark:text-slate-400">{e.label}</p>
                 </div>
-                <span className="shrink-0 text-[11px] text-slate-400">{formatRelative(e.createdAt)}</span>
+                <span className="shrink-0 text-xs text-slate-400">{formatRelative(e.createdAt)}</span>
               </div>
             ))}
           </div>

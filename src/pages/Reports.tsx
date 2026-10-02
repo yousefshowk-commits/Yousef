@@ -57,10 +57,10 @@ export default function Reports() {
       <PageHeader icon="📊" title="التقارير" subtitle={`${state.settings.className} — ${formatDate(Date.now())}`} actions={<Button variant="outline" icon={<Printer size={18} />} onClick={() => window.print()}>طباعة التقرير</Button>} />
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <StatCard icon="📅" label="نقاط هذا الأسبوع" value={num(weekPts)} gradient="from-violet-300 to-purple-600" />
-        <StatCard icon="🗓️" label="نقاط هذا الشهر" value={num(monthPts)} gradient="from-sky-300 to-blue-500" />
-        <StatCard icon="🙋" label="طلاب نشطون اليوم" value={`${activeToday}/${state.students.length}`} gradient="from-emerald-300 to-teal-500" />
-        <StatCard icon="📈" label="متوسط نقاط الطالب" value={num(avg)} gradient="from-amber-300 to-orange-500" />
+        <StatCard icon="📅" label="نقاط هذا الأسبوع" value={num(weekPts)} />
+        <StatCard icon="🗓️" label="نقاط هذا الشهر" value={num(monthPts)} />
+        <StatCard icon="🙋" label="طلاب نشطون اليوم" value={`${activeToday}/${state.students.length}`} />
+        <StatCard icon="📈" label="متوسط نقاط الطالب" value={num(avg)} />
       </div>
 
       <div className="grid gap-4 lg:grid-cols-2">
@@ -83,7 +83,7 @@ export default function Reports() {
                 <Select value={studentId} onChange={(e) => setStudentId(e.target.value)} className="h-10 w-48 py-0" aria-label="اختر طالبًا">
                   {state.students.map((s) => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </Select>
-                {studentId && <Link to={`/students/${studentId}`} className="whitespace-nowrap text-sm font-bold text-violet-600 dark:text-violet-300">🖨️ تقرير الطالب</Link>}
+                {studentId && <Link to={`/students/${studentId}`} className="whitespace-nowrap text-sm font-bold text-indigo-600 dark:text-indigo-300">🖨️ تقرير الطالب</Link>}
               </div>
             }
           />
@@ -113,7 +113,7 @@ export default function Reports() {
               return (
                 <tr key={s.id} className="border-b border-slate-100 last:border-0 dark:border-white/5">
                   <td className="p-2 text-slate-400">{i + 1}</td>
-                  <td className="p-2 font-bold"><Link to={`/students/${s.id}`} className="hover:text-violet-600">{s.avatar} {s.name}</Link></td>
+                  <td className="p-2 font-bold"><Link to={`/students/${s.id}`} className="hover:text-indigo-600">{s.avatar} {s.name}</Link></td>
                   <td className="p-2">{st.level.level.icon} {st.level.level.name}</td>
                   <td className="p-2 font-bold">{num(s.totalEarned)}</td>
                   <td className="p-2">{num(s.points)}</td>

@@ -64,15 +64,15 @@ export default function Classes() {
           const active = c.id === registry.activeId;
           const summary = active ? { ...c, name: state.settings.className, teacher: state.settings.teacherName, students: state.students.length } : c;
           return (
-            <div key={c.id} className={cn('glass flex flex-col gap-4 rounded-[1.75rem] p-5 transition', active ? 'ring-4 ring-violet-500/60' : 'hover:-translate-y-1')}>
+            <div key={c.id} className={cn('glass flex flex-col gap-4 rounded-[1.75rem] p-5 transition', active ? 'ring-4 ring-indigo-500/60' : 'hover:-translate-y-1')}>
               <div className="flex items-start gap-3">
-                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-violet-100 text-3xl dark:bg-violet-500/15">{CLASS_EMOJIS[i % CLASS_EMOJIS.length]}</span>
+                <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-indigo-100 text-3xl dark:bg-indigo-500/15">{CLASS_EMOJIS[i % CLASS_EMOJIS.length]}</span>
                 <div className="min-w-0 flex-1">
                   <h3 className="font-display truncate text-xl font-bold">{summary.name}</h3>
                   <p className="truncate text-sm text-slate-500 dark:text-slate-400">👩‍🏫 {summary.teacher}</p>
                   <p className="text-sm text-slate-500 dark:text-slate-400">👦 {summary.students} طالب/طالبة</p>
                 </div>
-                {active && <span className="flex items-center gap-1 rounded-full bg-violet-600 px-2.5 py-1 text-xs font-bold text-white"><Check size={14} /> الحالي</span>}
+                {active && <span className="flex items-center gap-1 rounded-full bg-indigo-600 px-2.5 py-1 text-xs font-bold text-white"><Check size={14} /> الحالي</span>}
               </div>
               <div className="mt-auto flex gap-2">
                 <Button className="flex-1" variant={active ? 'secondary' : 'primary'} onClick={() => open(c.id)}>
@@ -95,7 +95,7 @@ export default function Classes() {
         })}
         <button
           onClick={() => setAdding(true)}
-          className="flex min-h-44 flex-col items-center justify-center gap-2 rounded-[1.75rem] border-2 border-dashed border-violet-300 p-5 font-bold text-violet-600 transition hover:bg-violet-50 dark:border-violet-400/40 dark:text-violet-300 dark:hover:bg-violet-500/10"
+          className="flex min-h-44 flex-col items-center justify-center gap-2 rounded-[1.75rem] border-2 border-dashed border-indigo-300 p-5 font-bold text-indigo-600 transition hover:bg-indigo-50 dark:border-indigo-400/40 dark:text-indigo-300 dark:hover:bg-indigo-500/10"
         >
           <Plus size={32} />
           إضافة فصل جديد

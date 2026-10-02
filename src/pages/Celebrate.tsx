@@ -40,7 +40,7 @@ export default function Celebrate() {
         <Card className="flex flex-col">
           <CardTitle icon="✨" title="رسالة الاحتفال" />
           {student && (
-            <div className="mb-4 flex items-center gap-3 rounded-2xl bg-gradient-to-l from-violet-100 to-pink-100 p-3 dark:from-violet-500/10 dark:to-pink-500/10">
+            <div className="mb-4 flex items-center gap-3 rounded-2xl bg-gradient-to-l from-indigo-100 to-pink-100 p-3 dark:from-indigo-500/10 dark:to-pink-500/10">
               <Avatar student={student} size="md" />
               <div>
                 <p className="font-display text-xl font-bold">{student.name}</p>
@@ -53,7 +53,7 @@ export default function Celebrate() {
           </Field>
           <div className="mt-3 flex flex-wrap gap-2">
             {PRESETS.map((p) => (
-              <button key={p} onClick={() => setMsg(p)} className="rounded-full bg-violet-50 px-3 py-1.5 text-sm font-bold text-violet-700 hover:bg-violet-100 dark:bg-violet-500/10 dark:text-violet-200">
+              <button key={p} onClick={() => setMsg(p)} className="rounded-full bg-indigo-50 px-3 py-1.5 text-sm font-bold text-indigo-700 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:text-indigo-200">
                 {p}
               </button>
             ))}

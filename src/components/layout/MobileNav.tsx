@@ -12,15 +12,15 @@ export function MobileNav({ onMore }: { onMore: () => void }) {
           to={item.to}
           end={item.to === '/'}
           className={({ isActive }) =>
-            cn('flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl px-1 py-1.5 text-[11px] font-bold transition', isActive ? 'bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-200' : 'text-slate-500 dark:text-slate-400')
+            cn('flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-xs font-bold transition-colors duration-200', isActive ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-200' : 'text-slate-500 dark:text-slate-400')
           }
         >
-          <span className="text-xl leading-none">{item.emoji}</span>
+          <item.icon size={21} strokeWidth={2.2} aria-hidden />
           <span className="truncate">{item.label.split(' ')[0]}</span>
         </NavLink>
       ))}
-      <button onClick={onMore} className="flex min-w-0 flex-1 flex-col items-center gap-0.5 rounded-2xl px-1 py-1.5 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-        <Menu size={20} />
+      <button onClick={onMore} className="flex min-h-12 min-w-0 flex-1 flex-col items-center justify-center gap-0.5 rounded-2xl px-1 py-1.5 text-xs font-bold text-slate-500 dark:text-slate-400">
+        <Menu size={21} strokeWidth={2.2} aria-hidden />
         <span>المزيد</span>
       </button>
     </nav>

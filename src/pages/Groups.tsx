@@ -149,7 +149,7 @@ export default function Groups() {
             <EmojiPicker value={editing.emoji} onChange={(emoji) => setEditing({ ...editing, emoji })} choices={GROUP_EMOJIS} />
             <div className="flex flex-wrap gap-2">
               {COLORS.map((c) => (
-                <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-violet-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
+                <button key={c} type="button" onClick={() => setEditing({ ...editing, color: c })} className={cn('h-8 w-8 rounded-full', editing.color === c && 'ring-4 ring-offset-2 ring-indigo-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
               ))}
             </div>
           </div>

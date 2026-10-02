@@ -78,7 +78,7 @@ export default function Certificate() {
             <p className="mb-1.5 text-sm font-bold text-slate-600 dark:text-slate-300">لون التصميم</p>
             <div className="flex gap-2">
               {(Object.keys(THEMES) as (keyof typeof THEMES)[]).map((k) => (
-                <button key={k} onClick={() => setTheme(k)} className={cn('h-10 w-10 rounded-full', theme === k && 'ring-4 ring-offset-2 ring-violet-400 dark:ring-offset-slate-900')} style={{ background: THEMES[k].border }} aria-label={k} />
+                <button key={k} onClick={() => setTheme(k)} className={cn('h-10 w-10 rounded-full', theme === k && 'ring-4 ring-offset-2 ring-indigo-400 dark:ring-offset-slate-900')} style={{ background: THEMES[k].border }} aria-label={k} />
               ))}
             </div>
           </div>

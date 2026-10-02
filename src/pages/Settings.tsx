@@ -210,7 +210,7 @@ export default function SettingsPage() {
               { to: '/wheel', label: 'عجلة الحظ', icon: '🎡' },
               { to: '/students', label: 'الطلاب', icon: '👦' },
             ].map((x) => (
-              <Link key={x.to} to={x.to} className="flex flex-col items-center gap-1 rounded-2xl bg-slate-50 p-4 font-bold transition hover:-translate-y-0.5 hover:bg-violet-50 dark:bg-white/5 dark:hover:bg-violet-500/10">
+              <Link key={x.to} to={x.to} className="flex flex-col items-center gap-1 rounded-2xl bg-slate-50 p-4 font-bold transition hover:-translate-y-0.5 hover:bg-indigo-50 dark:bg-white/5 dark:hover:bg-indigo-500/10">
                 <span className="text-3xl">{x.icon}</span>
                 {x.label}
               </Link>

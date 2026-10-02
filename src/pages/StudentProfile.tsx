@@ -42,7 +42,7 @@ export default function StudentProfile() {
   }, [state.log, student, range]);
 
   if (!student) {
-    return <EmptyState icon="🔍" title="الطالب غير موجود" action={<Link to="/students" className="font-bold text-violet-600">العودة للطلاب</Link>} />;
+    return <EmptyState icon="🔍" title="الطالب غير موجود" action={<Link to="/students" className="font-bold text-indigo-600">العودة للطلاب</Link>} />;
   }
 
   const info = levelInfo(state.levels, student.totalEarned);
@@ -66,14 +66,14 @@ export default function StudentProfile() {
     { icon: '💎', label: 'النقاط الحالية', value: num(student.points), cls: 'text-sky-600 dark:text-sky-300' },
     { icon: '🏆', label: 'إجمالي النقاط المكتسبة', value: num(student.totalEarned), cls: 'text-amber-600 dark:text-amber-300' },
     { icon: '🎁', label: 'النقاط المصروفة', value: num(student.totalSpent), cls: 'text-pink-600 dark:text-pink-300' },
-    { icon: '🏅', label: 'الشارات', value: num(earnedBadges.length), cls: 'text-violet-600 dark:text-violet-300' },
+    { icon: '🏅', label: 'الشارات', value: num(earnedBadges.length), cls: 'text-indigo-600 dark:text-indigo-300' },
     { icon: '🔥', label: 'أيام الالتزام المتتالية', value: num(streak), cls: 'text-orange-600 dark:text-orange-300' },
   ];
 
   return (
     <div className="space-y-5">
       <div className="no-print flex flex-wrap items-center justify-between gap-2">
-        <Link to="/students" className="flex items-center gap-1 font-bold text-slate-500 hover:text-violet-600">
+        <Link to="/students" className="flex items-center gap-1 font-bold text-slate-500 hover:text-indigo-600">
           <ArrowRight size={18} /> الطلاب
         </Link>
         <div className="flex flex-wrap gap-2">

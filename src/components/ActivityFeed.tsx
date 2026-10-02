@@ -11,17 +11,17 @@ const UNDOABLE = new Set(['award', 'deduct', 'redeem', 'wheel', 'group', 'badge'
 export function ActivityFeed({ entries, students, onUndo, showStudent = true, timeline = false }: { entries: LogEntry[]; students: Map<string, Student>; onUndo?: (id: string) => void; showStudent?: boolean; timeline?: boolean }) {
   if (!entries.length) return <p className="py-8 text-center text-slate-500">لا توجد عمليات بعد ✨</p>;
   return (
-    <ol className={cn('space-y-1.5', timeline && 'relative border-s-2 border-dashed border-violet-200 ps-4 dark:border-violet-500/30')}>
+    <ol className={cn('space-y-1.5', timeline && 'relative border-s-2 border-dashed border-indigo-200 ps-4 dark:border-indigo-500/30')}>
       {entries.map((e) => {
         const s = e.studentId ? students.get(e.studentId) : undefined;
         const positive = e.amount > 0;
         return (
           <li key={e.id} className={cn('group relative flex items-center gap-3 rounded-2xl p-2.5 transition hover:bg-white/70 dark:hover:bg-white/5', e.undone && 'opacity-45')}>
-            {timeline && <span className="absolute -start-[1.45rem] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-white bg-violet-500 dark:border-slate-900" />}
+            {timeline && <span className="absolute -start-[1.45rem] top-1/2 h-3 w-3 -translate-y-1/2 rounded-full border-2 border-white bg-indigo-500 dark:border-slate-900" />}
             {showStudent && s ? (
               <Avatar student={s} size="sm" ring={false} />
             ) : (
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-100 text-xl dark:bg-violet-500/15">{e.icon}</span>
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-indigo-100 text-xl dark:bg-indigo-500/15">{e.icon}</span>
             )}
             <div className="min-w-0 flex-1">
               <p className={cn('truncate font-bold', e.undone && 'line-through')}>

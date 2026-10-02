@@ -197,7 +197,7 @@ export default function Wheel() {
       <Modal open={!!result} onClose={() => setResult(null)} size="sm">
         {result && student && (
           <div className="text-center">
-            <p className="font-display text-2xl font-extrabold text-violet-600 dark:text-violet-300">🎉 مبروك يا {firstName(student.name)}!</p>
+            <p className="font-display text-2xl font-extrabold text-indigo-600 dark:text-indigo-300">🎉 مبروك يا {firstName(student.name)}!</p>
             <div className="animate-bounce-in my-4 text-8xl">{result.seg.icon}</div>
             <p className="font-display text-2xl font-bold">{result.seg.label}</p>
             <p className="mt-2 text-lg text-slate-600 dark:text-slate-300">{result.detail}</p>

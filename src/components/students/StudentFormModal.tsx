@@ -108,7 +108,7 @@ export function StudentFormModal({ open, student, onClose }: { open: boolean; st
           <p className="mb-1.5 text-sm font-bold text-slate-600 dark:text-slate-300">الأفاتار</p>
           <div className="grid grid-cols-8 gap-1.5 sm:grid-cols-12">
             {AVATARS.map((a) => (
-              <button key={a} type="button" onClick={() => set({ avatar: a, photo: undefined })} className={cn('grid aspect-square place-items-center rounded-xl text-2xl transition hover:scale-110', draft.avatar === a && !draft.photo ? 'bg-violet-100 ring-2 ring-violet-500 dark:bg-violet-500/20' : 'hover:bg-slate-100 dark:hover:bg-white/10')}>
+              <button key={a} type="button" onClick={() => set({ avatar: a, photo: undefined })} className={cn('grid aspect-square place-items-center rounded-xl text-2xl transition hover:scale-110', draft.avatar === a && !draft.photo ? 'bg-indigo-100 ring-2 ring-indigo-500 dark:bg-indigo-500/20' : 'hover:bg-slate-100 dark:hover:bg-white/10')}>
                 {a}
               </button>
             ))}
@@ -119,7 +119,7 @@ export function StudentFormModal({ open, student, onClose }: { open: boolean; st
           <p className="mb-1.5 text-sm font-bold text-slate-600 dark:text-slate-300">اللون</p>
           <div className="flex flex-wrap gap-2">
             {COLORS.map((c) => (
-              <button key={c} type="button" onClick={() => set({ color: c })} className={cn('h-9 w-9 rounded-full transition hover:scale-110', draft.color === c && 'ring-4 ring-offset-2 ring-violet-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
+              <button key={c} type="button" onClick={() => set({ color: c })} className={cn('h-9 w-9 rounded-full transition hover:scale-110', draft.color === c && 'ring-4 ring-offset-2 ring-indigo-400 dark:ring-offset-slate-900')} style={{ background: c }} aria-label={c} />
             ))}
           </div>
         </div>
