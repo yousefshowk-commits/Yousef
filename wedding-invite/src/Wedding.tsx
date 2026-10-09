@@ -58,6 +58,8 @@ const gold = (pos: number): React.CSSProperties => ({
   backgroundImage: `linear-gradient(105deg, ${C.g0} 0%, ${C.g1} 18%, ${C.g2} 34%, ${C.g1} 44%, ${C.g3} 50%, ${C.g1} 56%, ${C.g2} 68%, ${C.g0} 100%)`,
   backgroundSize: "260% 100%", backgroundPosition: `${pos}% 50%`,
   WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent",
+  // tall Ruqaa ascenders (لـ) overshoot the inline box — pad the painted area so they stay gold
+  display: "inline-block", padding: "0.45em 0.12em 0.3em", margin: "-0.45em -0.12em -0.3em",
 });
 
 /** Calligraphy-style ink reveal: a feathered mask sweeps right→left like a pen. */
@@ -565,7 +567,7 @@ const Venue: React.FC<{ t: number }> = ({ t }) => (
       <circle cx={CX} cy={1064} r={14} fill={C.g2} opacity={r(t, 42.9, 43.3)} />
     </Svg>
     <Center y={650}>
-      <Rise t={t} at={40.6} style={{ fontFamily: F.kufi, fontSize: 42, color: C.blush }}>في</Rise>
+      <Rise t={t} at={40.6} style={{ fontFamily: F.kufi, fontSize: 42, color: C.blush, marginBottom: 48 }}>في</Rise>
       <Ink t={t} at={40.9} dur={1.6} style={{ fontFamily: F.ruqaa, fontWeight: 700, fontSize: 168, lineHeight: 1.35, filter: glowF(1.1) }}>
         <span style={gold(shimmer(t, 41.8, 2.6))}>فندق النجوم</span>
       </Ink>
