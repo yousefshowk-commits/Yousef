@@ -5,12 +5,40 @@ import { S1Date, S2Ribbons, S3Roles, S4Future, S5Pillars, S6Tribute, S7Finale } 
 
 // ============================================================================
 //  يوم المرأة العُمانية — 50s, 16:9, 3D luxury cut.
-//  Narration (ElevenLabs, voice "saber") starts at VO_AT; phrase times below are
-//  Scribe word timestamps + VO_AT, so every reveal lands on its spoken phrase.
+//  All times below are on the reference timeline (see toRef); every reveal lands
+//  on its spoken phrase of the ElevenLabs «Hanan» narration.
 // ============================================================================
 
 export const FILM_LEN = 50;
-export const VO_AT = 2.0;
+export const VO_AT = 1.6; // narration start on the final timeline
+
+// ---------------------------------------------------------------- time warp
+// The picture is authored on a reference timeline (first narration take). The final
+// narration (ElevenLabs «Hanan», pauses tightened) speaks each phrase at a different
+// moment, so film time is mapped back to reference time through monotone-cubic
+// (PCHIP) anchors placed on the first word of every phrase — no speed jumps.
+const WARP_NEW = [0.0, 1.6, 3.89, 6.641, 9.945, 12.346, 12.666, 14.672, 17.453, 18.493, 19.719, 20.759, 22.096, 23.616, 25.012, 26.852, 28.052, 29.626, 31.715, 33.323, 35.094, 38.117, 40.023, 42.252, 44.234, 47.594, 50.0];
+const WARP_REF = [0.0, 2.0, 4.32, 7.04, 10.08, 12.56, 12.8, 15.04, 17.68, 18.533, 19.52, 20.16, 21.84, 23.24, 24.72, 26.2, 27.04, 28.8, 31.04, 32.56, 34.4, 37.12, 38.8, 40.88, 43.04, 45.68, 50.0];
+const pchipSlopes = (x: number[], y: number[]) => {
+  const n = x.length, h = x.slice(1).map((v, i) => v - x[i]), d = h.map((hi, i) => (y[i + 1] - y[i]) / hi);
+  const m = new Array(n).fill(0);
+  m[0] = d[0]; m[n - 1] = d[n - 2];
+  for (let i = 1; i < n - 1; i++) {
+    if (d[i - 1] * d[i] <= 0) m[i] = 0;
+    else { const w1 = 2 * h[i] + h[i - 1], w2 = h[i] + 2 * h[i - 1]; m[i] = (w1 + w2) / (w1 / d[i - 1] + w2 / d[i]); }
+  }
+  return m;
+};
+const WARP_M = pchipSlopes(WARP_NEW, WARP_REF);
+export const toRef = (t: number) => {
+  const x = WARP_NEW, y = WARP_REF;
+  if (t <= x[0]) return y[0];
+  if (t >= x[x.length - 1]) return y[y.length - 1];
+  let i = 0; while (t > x[i + 1]) i++;
+  const h = x[i + 1] - x[i], s = (t - x[i]) / h, s2 = s * s, s3 = s2 * s;
+  return (2 * s3 - 3 * s2 + 1) * y[i] + (s3 - 2 * s2 + s) * h * WARP_M[i] + (-2 * s3 + 3 * s2) * y[i + 1] + (s3 - s2) * h * WARP_M[i + 1];
+};
+
 const W = 1920, H = 1080;
 
 const C = {
@@ -280,7 +308,7 @@ const Stage: React.FC<{ t: number; win: readonly [number, number]; three: React.
 export const Film: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const t = frame / fps;
+  const t = toRef(frame / fps);
   return (
     <AbsoluteFill style={{ background: "#080304", direction: "rtl" }}>
       <FontGate>
