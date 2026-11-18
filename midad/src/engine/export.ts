@@ -1,0 +1,106 @@
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+import type { Doc } from '../state/types';
+import { DocSvg } from '../components/render';
+import { loadFont } from './hb';
+import { bumpLayoutVersion } from './layout';
+import { FONT_MAP, cssFamily } from '../data/fonts';
+
+/** تأكد من تحميل كل خطوط المستند قبل التصدير */
+export async function ensureFonts(doc: Doc): Promise<void> {
+  const jobs = doc.objects.filter((o) => o.type === 'text').map((o) => loadFont(o.fontId, o.weight));
+  await Promise.all(jobs);
+  bumpLayoutVersion();
+}
+
+export async function docToSvgString(doc: Doc, transparent = false): Promise<string> {
+  await ensureFonts(doc);
+  const markup = renderToStaticMarkup(createElement(DocSvg, { doc, transparent, prefix: 'x' }));
+  return `<?xml version="1.0" encoding="UTF-8"?>\n${markup}`;
+}
+
+export async function docToCanvas(doc: Doc, scale: number, transparent: boolean, bgForJpg?: string): Promise<HTMLCanvasElement> {
+  const svg = await docToSvgString(doc, transparent);
+  const url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+  try {
+    const img = new Image();
+    img.decoding = 'async';
+    await new Promise<void>((res, rej) => {
+      img.onload = () => res();
+      img.onerror = () => rej(new Error('تعذر رسم الصورة'));
+      img.src = url;
+    });
+    const w = Math.round(doc.width * scale);
+    const h = Math.round(doc.height * scale);
+    const max = 16384;
+    if (w > max || h > max) throw new Error('المقاس كبير جدًا، اختر مضاعفًا أصغر');
+    const canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext('2d')!;
+    if (bgForJpg) {
+      ctx.fillStyle = bgForJpg;
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.drawImage(img, 0, 0, w, h);
+    return canvas;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+export function download(blob: Blob, name: string) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+export async function exportPng(doc: Doc, scale: number, transparent: boolean, name: string) {
+  const c = await docToCanvas(doc, scale, transparent);
+  const blob = await new Promise<Blob | null>((r) => c.toBlob(r, 'image/png'));
+  if (!blob) throw new Error('فشل إنشاء الصورة');
+  download(blob, `${name}.png`);
+}
+
+export async function exportJpg(doc: Doc, scale: number, name: string) {
+  const c = await docToCanvas(doc, scale, false, '#ffffff');
+  const blob = await new Promise<Blob | null>((r) => c.toBlob(r, 'image/jpeg', 0.93));
+  if (!blob) throw new Error('فشل إنشاء الصورة');
+  download(blob, `${name}.jpg`);
+}
+
+export async function exportSvg(doc: Doc, transparent: boolean, name: string) {
+  const s = await docToSvgString(doc, transparent);
+  download(new Blob([s], { type: 'image/svg+xml' }), `${name}.svg`);
+}
+
+export function exportProject(doc: Doc, name: string) {
+  download(new Blob([JSON.stringify(doc)], { type: 'application/json' }), `${name}.midad.json`);
+}
+
+export async function readProject(file: File): Promise<Doc> {
+  const text = await file.text();
+  const d = JSON.parse(text) as Doc;
+  if (!d || d.version !== 1 || !Array.isArray(d.objects)) throw new Error('ملف غير صالح');
+  return d;
+}
+
+// ———— معاينة الخطوط في الواجهة عبر CSS
+const registered = new Set<string>();
+export function ensureCssFont(id: string) {
+  if (registered.has(id)) return;
+  const def = FONT_MAP[id];
+  if (!def) return;
+  registered.add(id);
+  try {
+    const ff = new FontFace(cssFamily(id), `url(${import.meta.env.BASE_URL}fonts/${def.file})`);
+    document.fonts.add(ff);
+    void ff.load().catch(() => undefined);
+  } catch {
+    /* المتصفح لا يدعم FontFace */
+  }
+}

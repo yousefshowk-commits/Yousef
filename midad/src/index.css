@@ -1,0 +1,130 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-ink-50: #f7f3ec;
+  --color-ink-100: #ece5d8;
+  --color-ink-200: #d3c9b8;
+  --color-ink-300: #a89d8b;
+  --color-ink-400: #857b6b;
+  --color-ink-500: #5d554a;
+  --color-ink-600: #423c34;
+  --color-ink-700: #2f2a24;
+  --color-ink-800: #221e1a;
+  --color-ink-900: #171411;
+  --color-ink-950: #0f0d0b;
+  --color-gold-200: #f6e2a8;
+  --color-gold-300: #eccb72;
+  --color-gold-400: #e0b24a;
+  --color-gold-500: #d29b2e;
+  --color-gold-600: #a97a1e;
+  --font-ui: 'midad-ui', 'Segoe UI', Tahoma, sans-serif;
+}
+
+@font-face {
+  font-family: 'midad-ui';
+  src: url('/fonts/IBMPlexSansArabic-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'midad-ui';
+  src: url('/fonts/IBMPlexSansArabic-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-display: swap;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-ink-100);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior: none;
+  overflow: hidden;
+}
+
+.stage-wrap {
+  background-color: #1b1814;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.06) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+.glyph-hit {
+  fill: transparent;
+  stroke: rgba(122, 167, 255, 0.35);
+  stroke-width: 0.6px;
+  vector-effect: non-scaling-stroke;
+  cursor: grab;
+}
+.glyph-hit:hover {
+  fill: rgba(122, 167, 255, 0.18);
+  stroke: rgba(122, 167, 255, 0.9);
+}
+
+.num {
+  background: var(--color-ink-800);
+  border: 1px solid var(--color-ink-600);
+  border-radius: 6px;
+  padding: 3px 6px;
+  font-size: 12px;
+  color: var(--color-ink-100);
+  outline: none;
+}
+.num:focus {
+  border-color: var(--color-gold-500);
+}
+
+.range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--color-ink-600);
+  outline: none;
+}
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-gold-400);
+  border: 2px solid var(--color-ink-900);
+  cursor: pointer;
+}
+.range::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-gold-400);
+  border: 2px solid var(--color-ink-900);
+  cursor: pointer;
+}
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-600) transparent;
+}
+
+select.num {
+  padding-inline-end: 4px;
+}
+
+@keyframes toast-in {
+  from {
+    transform: translate(-50%, 12px);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+.toast {
+  animation: toast-in 0.2s ease-out;
+}
