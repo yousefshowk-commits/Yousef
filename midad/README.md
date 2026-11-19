@@ -15,6 +15,12 @@ npm run dev        # http://localhost:5173
 npm run build      # نسخة الإنتاج في dist/ — ملفات ثابتة تعمل على أي استضافة
 ```
 
+## نسخة الكمبيوتر (ملف واحد دون إنترنت)
+
+`release/midad.html` — البرنامج كاملًا مع كل الخطوط في ملف واحد (حوالي 20 ميغابايت). انسخه إلى أي كمبيوتر وافتحه بنقرتين في Chrome أو Edge أو Firefox أو Safari: لا تثبيت ولا إنترنت ولا حساب. أعماله تُحفظ في متصفح ذلك الجهاز.
+
+لإعادة توليده بعد أي تعديل: `npm run build:offline`.
+
 ## الأدوات
 
 | الأداة | ما تفعله |
@@ -56,6 +62,8 @@ src/engine/hb.ts        تحميل الخطوط في HarfBuzz، التشكيل،
 src/engine/layout.ts    تخطيط النص: الأسطر، المحاذاة، الكشيدة، تعديل الحروف، التراكيب
 src/engine/userFonts.ts الخطوط المستوردة من جهاز المستخدم (IndexedDB)
 src/engine/kashida.ts   مواضع الكشيدة وإدراجها وإعادة ترقيم التعديلات عند تحرير النص
+src/engine/embedded.ts  الخطوط المضمّنة في نسخة الملف الواحد
+scripts/make-offline.mjs  دمج نسخة الملف الواحد في release/midad.html
 src/engine/export.ts    التصدير PNG/JPG/SVG والمشروع
 src/components/render.tsx  رسم المستند SVG (مشترك بين المحرر والتصدير)
 src/components/Stage.tsx   اللوحة: التحديد والسحب والتحجيم والتدوير ووضع الحروف

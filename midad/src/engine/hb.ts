@@ -1,6 +1,7 @@
 // محرك التشكيل: تحميل الخطوط في HarfBuzz وتشكيل النص العربي وتحويل الأشكال إلى مسارات.
 import * as hb from 'harfbuzzjs';
 import { getFont, type FontDef, featureLabel, isUsefulFeature } from '../data/fonts';
+import { embeddedFont } from './embedded';
 
 export interface PathCmd {
   type: string; // M L Q C Z
@@ -65,6 +66,13 @@ function loadFace(file: string): Promise<hb.Face> {
     const buf = userBuffers.get(file);
     p = buf ? Promise.resolve(new hb.Face(new hb.Blob(buf.slice(0)))) : Promise.reject(new Error('الخط المستورد غير موجود'));
     blobCache.set(file, p);
+  }
+  if (!p) {
+    const emb = embeddedFont(file);
+    if (emb) {
+      p = Promise.resolve(new hb.Face(new hb.Blob(emb)));
+      blobCache.set(file, p);
+    }
   }
   if (!p) {
     p = fetch(`${BASE}fonts/${file}`)

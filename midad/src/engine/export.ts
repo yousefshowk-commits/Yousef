@@ -5,6 +5,7 @@ import { DocSvg } from '../components/render';
 import { loadFont } from './hb';
 import { bumpLayoutVersion } from './layout';
 import { FONT_MAP, cssFamily } from '../data/fonts';
+import { embeddedFont } from './embedded';
 
 /** تأكد من تحميل كل خطوط المستند قبل التصدير */
 export async function ensureFonts(doc: Doc): Promise<void> {
@@ -118,7 +119,8 @@ export function ensureCssFont(id: string) {
   if (!def || def.user) return; // المستورد يُسجَّل من بياناته مباشرة
   registered.add(id);
   try {
-    const ff = new FontFace(cssFamily(id), `url(${import.meta.env.BASE_URL}fonts/${def.file})`);
+    const emb = embeddedFont(def.file);
+    const ff = new FontFace(cssFamily(id), emb ?? `url(${import.meta.env.BASE_URL}fonts/${def.file})`);
     document.fonts.add(ff);
     void ff.load().catch(() => undefined);
   } catch {

@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc --noEmit -p . && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit -p ."
+    "typecheck": "tsc --noEmit -p .",
+    "build:offline": "tsc --noEmit -p . && vite build --mode offline && node scripts/make-offline.mjs"
   },
   "dependencies": {
     "harfbuzzjs": "1.6.4",
