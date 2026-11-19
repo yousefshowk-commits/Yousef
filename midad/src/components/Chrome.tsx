@@ -85,7 +85,7 @@ export function TopBar() {
           }
         }}
       />
-      <BarBtn title="حفظ المشروع (Ctrl+S)" onClick={() => exportProject(doc, 'midad-project')}>
+      <BarBtn title="حفظ المشروع (Ctrl+S)" onClick={() => exportProject(doc, 'midad-project').catch((e: Error) => notify(e.message))}>
         <Save size={16} />
         <span className="hidden lg:inline">حفظ</span>
       </BarBtn>

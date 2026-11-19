@@ -40,6 +40,10 @@ body,
   margin: 0;
 }
 
+:root {
+  color-scheme: dark;
+}
+
 body {
   background: var(--color-ink-950);
   color: var(--color-ink-100);

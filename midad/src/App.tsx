@@ -47,7 +47,7 @@ export default function App() {
         st.redo();
       } else if (mod && e.key.toLowerCase() === 's') {
         e.preventDefault();
-        exportProject(st.doc, 'midad-project');
+        exportProject(st.doc, 'midad-project').catch((err: Error) => st.notify(err.message));
       } else if (mod && e.key.toLowerCase() === 'c') {
         st.copy();
       } else if (mod && e.key.toLowerCase() === 'v') {

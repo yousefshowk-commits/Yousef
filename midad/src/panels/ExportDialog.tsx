@@ -25,7 +25,7 @@ export function ExportDialog() {
       if (fmt === 'png') await exportPng(doc, scale, transparent, n);
       if (fmt === 'jpg') await exportJpg(doc, scale, n);
       if (fmt === 'svg') await exportSvg(doc, transparent, n);
-      if (fmt === 'project') exportProject(doc, n);
+      if (fmt === 'project') await exportProject(doc, n);
       notify('تم التصدير ✓');
       setShow(false);
     } catch (e) {

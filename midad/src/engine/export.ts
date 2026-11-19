@@ -49,7 +49,28 @@ export async function docToCanvas(doc: Doc, scale: number, transparent: boolean,
   }
 }
 
-export function download(blob: Blob, name: string) {
+interface DownloadsNs {
+  save: (r: { filename: string; data: Blob }) => Promise<{ status: string }>;
+}
+type ClaudeHost = { use?: (name: string) => Promise<unknown> };
+
+/** حفظ ملف: عبر قدرة التنزيل في claude.ai إن كانت متاحة، وإلا رابط تنزيل عادي */
+export async function download(blob: Blob, name: string): Promise<void> {
+  const host = (window as unknown as { claude?: ClaudeHost }).claude;
+  if (host?.use) {
+    const ns = (await host.use('downloads').catch(() => null)) as DownloadsNs | null;
+    if (ns) {
+      try {
+        await ns.save({ filename: name, data: blob });
+        return;
+      } catch (e) {
+        const code = (e as { code?: string }).code;
+        if (code === 'declined') throw new Error('أُلغي الحفظ');
+        if (code === 'rate_limited') throw new Error('هناك نافذة حفظ مفتوحة بالفعل، حاول بعد لحظة');
+        throw new Error('الحفظ غير متاح في هذا العرض');
+      }
+    }
+  }
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = name;
@@ -63,23 +84,23 @@ export async function exportPng(doc: Doc, scale: number, transparent: boolean, n
   const c = await docToCanvas(doc, scale, transparent);
   const blob = await new Promise<Blob | null>((r) => c.toBlob(r, 'image/png'));
   if (!blob) throw new Error('فشل إنشاء الصورة');
-  download(blob, `${name}.png`);
+  await download(blob, `${name}.png`);
 }
 
 export async function exportJpg(doc: Doc, scale: number, name: string) {
   const c = await docToCanvas(doc, scale, false, '#ffffff');
   const blob = await new Promise<Blob | null>((r) => c.toBlob(r, 'image/jpeg', 0.93));
   if (!blob) throw new Error('فشل إنشاء الصورة');
-  download(blob, `${name}.jpg`);
+  await download(blob, `${name}.jpg`);
 }
 
 export async function exportSvg(doc: Doc, transparent: boolean, name: string) {
   const s = await docToSvgString(doc, transparent);
-  download(new Blob([s], { type: 'image/svg+xml' }), `${name}.svg`);
+  await download(new Blob([s], { type: 'image/svg+xml' }), `${name}.svg`);
 }
 
-export function exportProject(doc: Doc, name: string) {
-  download(new Blob([JSON.stringify(doc)], { type: 'application/json' }), `${name}.midad.json`);
+export function exportProject(doc: Doc, name: string): Promise<void> {
+  return download(new Blob([JSON.stringify(doc)], { type: 'application/json' }), `${name}.midad.json`);
 }
 
 export async function readProject(file: File): Promise<Doc> {
