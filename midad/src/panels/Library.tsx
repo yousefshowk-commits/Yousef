@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Eye, EyeOff, Lock, Search, Unlock, ChevronUp, ChevronDown, Type, Image as ImageIcon, Shapes } from 'lucide-react';
+import { Eye, EyeOff, Lock, Search, Unlock, ChevronUp, ChevronDown, Type, Image as ImageIcon, Shapes, Upload, Trash2 } from 'lucide-react';
 import { useSelected, useStore } from '../state/store';
 import { CATEGORIES, FONTS, cssFamily, type FontCategory } from '../data/fonts';
 import { TEMPLATES } from '../data/templates';
@@ -9,6 +9,7 @@ import { BG_PRESETS, CANVAS_PRESETS, PAPERS, PATTERNS } from '../data/presets';
 import { makeShape, makeText } from '../state/factory';
 import { DocSvg } from '../components/render';
 import { ensureCssFont } from '../engine/export';
+import { deleteUserFont, importFontFile } from '../engine/userFonts';
 import { ColorInput, Row, Section, Slider, cn } from '../components/ui';
 import { FillEditor, fillPreview } from './FillEditor';
 import type { Doc } from '../state/types';
@@ -49,9 +50,15 @@ function FontsLib() {
   const doc = useStore((s) => s.doc);
   const updateObj = useStore((s) => s.updateObj);
   const addObj = useStore((s) => s.addObj);
+  const notify = useStore((s) => s.notify);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [cat, setCat] = useState<FontCategory | 'all'>('all');
   const [q, setQ] = useState('');
+  const [busy, setBusy] = useState(false);
+  const [confirmDel, setConfirmDel] = useState<string | null>(null);
   const sample = sel?.type === 'text' ? sel.text.split('\n')[0].slice(0, 40) || 'بسم الله' : 'بسم الله الرحمن الرحيم';
+  const hasMine = FONTS.some((f) => f.user);
+  const cats = CATEGORIES.filter((c) => c.id !== 'mine' || hasMine);
   const list = FONTS.filter((f) => (cat === 'all' || f.category === cat) && (!q || f.name.includes(q) || f.latin.toLowerCase().includes(q.toLowerCase())));
   const apply = (id: string) => {
     const def = FONTS.find((f) => f.id === id)!;
@@ -59,17 +66,62 @@ function FontsLib() {
     if (sel?.type === 'text') updateObj(sel.id, { fontId: id, weight, overrides: {}, clusterFeatures: {}, features: [] });
     else addObj(makeText({ fontId: id, weight, x: doc.width / 2, y: doc.height / 2, size: newTextSize(doc), text: 'بسم الله الرحمن الرحيم' }));
   };
+  const onFiles = async (files: FileList | null) => {
+    if (!files?.length) return;
+    setBusy(true);
+    let last: string | null = null;
+    const msgs: string[] = [];
+    for (const f of Array.from(files)) {
+      try {
+        const { def, warning } = await importFontFile(f);
+        last = def.id;
+        msgs.push(warning ? `«${def.name}»: ${warning}` : `أُضيف «${def.name}»`);
+      } catch (e) {
+        msgs.push((e as Error).message);
+      }
+    }
+    setBusy(false);
+    if (last) {
+      setCat('mine');
+      apply(last);
+    }
+    notify(msgs.join(' — '));
+  };
   return (
     <div className="space-y-3 p-3">
+      <div className="rounded-xl border border-dashed border-gold-600/60 bg-gold-500/5 p-3">
+        <button
+          disabled={busy}
+          onClick={() => fileRef.current?.click()}
+          className="flex w-full items-center justify-center gap-2 rounded-lg bg-gradient-to-b from-gold-300 to-gold-500 px-3 py-2 text-sm font-bold text-ink-900 hover:brightness-110 disabled:opacity-60"
+        >
+          <Upload size={15} /> {busy ? 'جارٍ الاستيراد…' : 'استيراد خط من جهازك'}
+        </button>
+        <input
+          ref={fileRef}
+          id="font-import"
+          type="file"
+          multiple
+          accept=".ttf,.otf,.ttc,font/ttf,font/otf"
+          className="hidden"
+          onChange={(e) => {
+            const fl = e.target.files;
+            void onFiles(fl).finally(() => (e.target.value = ''));
+          }}
+        />
+        <div className="mt-2 text-[11px] leading-5 text-ink-400">
+          ملفات TTF أو OTF — مثل خط حمّلته من أحد مواقع الخطوط العربية. يعمل كأي خط في البرنامج (تحريك الحروف، الكشيدة، البدائل، التصدير)، ويُحفظ في هذا المتصفح فقط ولا يُرفع لأي مكان. تأكد أن رخصة الخط تسمح لك باستخدامه.
+        </div>
+      </div>
       <label className="flex items-center gap-2 rounded-lg border border-ink-600 bg-ink-800 px-2">
         <Search size={14} className="text-ink-400" />
-        <input className="w-full bg-transparent py-1.5 text-sm outline-none" placeholder="ابحث عن خط…" value={q} onChange={(e) => setQ(e.target.value)} />
+        <input id="font-search" className="w-full bg-transparent py-1.5 text-sm outline-none" placeholder="ابحث عن خط…" value={q} onChange={(e) => setQ(e.target.value)} />
       </label>
       <div className="flex flex-wrap gap-1">
         <Chip on={cat === 'all'} onClick={() => setCat('all')}>
           الكل ({FONTS.length})
         </Chip>
-        {CATEGORIES.map((c) => (
+        {cats.map((c) => (
           <Chip key={c.id} on={cat === c.id} onClick={() => setCat(c.id)} title={c.hint}>
             {c.label}
           </Chip>
@@ -78,10 +130,29 @@ function FontsLib() {
       {cat !== 'all' && <div className="text-[11px] text-ink-400">{CATEGORIES.find((c) => c.id === cat)?.hint}</div>}
       <div className="space-y-2">
         {list.map((f) => (
-          <FontCard key={f.id} id={f.id} name={f.name} latin={f.latin} cat={CATEGORIES.find((c) => c.id === f.category)!.label} sample={sample} active={sel?.type === 'text' && sel.fontId === f.id} onClick={() => apply(f.id)} />
+          <div key={f.id} className="relative">
+            <FontCard id={f.id} name={f.name} latin={f.latin} cat={CATEGORIES.find((c) => c.id === f.category)!.label} sample={sample} active={sel?.type === 'text' && sel.fontId === f.id} onClick={() => apply(f.id)} />
+            {f.user &&
+              (confirmDel === f.id ? (
+                <div className="absolute bottom-2 left-2 flex items-center gap-1 rounded-lg bg-ink-900/95 p-1 text-[11px] shadow">
+                  <span className="px-1 text-ink-200">حذف الخط؟</span>
+                  <button className="rounded bg-red-800 px-2 py-0.5 text-white hover:bg-red-700" onClick={() => { setConfirmDel(null); void deleteUserFont(f.id).then(() => notify(`حُذف «${f.name}»`)); }}>
+                    حذف
+                  </button>
+                  <button className="rounded bg-ink-700 px-2 py-0.5 text-ink-100" onClick={() => setConfirmDel(null)}>
+                    إلغاء
+                  </button>
+                </div>
+              ) : (
+                <button title="حذف هذا الخط من المتصفح" className="absolute bottom-2 left-2 rounded-md p-1 text-ink-400 hover:bg-red-900/60 hover:text-white" onClick={() => setConfirmDel(f.id)}>
+                  <Trash2 size={13} />
+                </button>
+              ))}
+          </div>
         ))}
+        {cat === 'mine' && !list.length && <div className="py-6 text-center text-[12px] text-ink-400">لم تستورد أي خط بعد.</div>}
       </div>
-      <div className="pt-2 text-center text-[10px] leading-5 text-ink-500">جميع الخطوط مفتوحة المصدر برخصة SIL OFL ومضمّنة في البرنامج — تعمل دون إنترنت.</div>
+      <div className="pt-2 text-center text-[10px] leading-5 text-ink-500">الخطوط المضمّنة مفتوحة المصدر (OFL وما يماثلها) — تعمل دون إنترنت.</div>
     </div>
   );
 }

@@ -56,7 +56,7 @@ const cache = new WeakMap<TextObj, { v: number; r: TextLayoutResult }>();
 
 export function layoutText(o: TextObj): TextLayoutResult {
   const c = cache.get(o);
-  if (c && (c.r.ready || c.v === fontVersion)) return c.r;
+  if (c && c.v === fontVersion) return c.r;
   const r = compute(o);
   cache.set(o, { v: fontVersion, r });
   return r;

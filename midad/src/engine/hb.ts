@@ -41,8 +41,31 @@ function fileFor(def: FontDef, weight: number): string {
   return def.file;
 }
 
+// بيانات الخطوط المستوردة من جهاز المستخدم (file = "user:<id>")
+const userBuffers = new Map<string, ArrayBuffer>();
+
+export function setUserFontBuffer(file: string, data: ArrayBuffer) {
+  userBuffers.set(file, data);
+}
+
+/** حذف خط من الذاكرة المؤقتة (عند حذف خط مستورد) */
+export function forgetFont(fontId: string, file: string) {
+  userBuffers.delete(file);
+  blobCache.delete(file);
+  for (const k of [...fontCache.keys()]) if (k.startsWith(`${fontId}@`)) fontCache.delete(k);
+}
+
+export function notifyFontsChanged() {
+  listeners.forEach((fn) => fn());
+}
+
 function loadFace(file: string): Promise<hb.Face> {
   let p = blobCache.get(file);
+  if (!p && file.startsWith('user:')) {
+    const buf = userBuffers.get(file);
+    p = buf ? Promise.resolve(new hb.Face(new hb.Blob(buf.slice(0)))) : Promise.reject(new Error('الخط المستورد غير موجود'));
+    blobCache.set(file, p);
+  }
   if (!p) {
     p = fetch(`${BASE}fonts/${file}`)
       .then((r) => {

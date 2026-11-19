@@ -1,6 +1,7 @@
 // فهرس الخطوط — كل الخطوط من Google Fonts برخصة OFL، محمّلة محليًا (مقتطعة للعربية واللاتينية الأساسية).
 
 export type FontCategory =
+  | 'mine'
   | 'naskh'
   | 'thuluth'
   | 'ruqaa'
@@ -12,6 +13,7 @@ export type FontCategory =
   | 'modern';
 
 export const CATEGORIES: { id: FontCategory; label: string; hint: string }[] = [
+  { id: 'mine', label: 'خطوطي', hint: 'خطوط استوردتها من جهازك — تبقى في هذا المتصفح فقط' },
   { id: 'naskh', label: 'نسخ', hint: 'خط المصاحف والكتب، واضح ومتوازن' },
   { id: 'thuluth', label: 'ثلث وجليّ', hint: 'خطوط عريضة للعناوين واللوحات' },
   { id: 'ruqaa', label: 'رقعة', hint: 'سريع وأنيق، للعبارات والتهاني' },
@@ -30,6 +32,7 @@ export interface FontDef {
   category: FontCategory;
   file: string; // ملف الوزن العادي
   bold?: string; // ملف الوزن العريض (للخطوط غير المتغيرة)
+  user?: boolean; // خط مستورد من جهاز المستخدم (يُخزَّن في المتصفح)
   variable?: { min: number; max: number; def: number }; // محور الوزن wght
 }
 
@@ -42,6 +45,7 @@ export const FONTS: FontDef[] = [
   { id: 'noto-naskh', name: 'نوتو نسخ', latin: 'Noto Naskh Arabic', category: 'naskh', file: 'NotoNaskhArabic-VF.ttf', variable: { min: 400, max: 700, def: 400 } },
   { id: 'markazi', name: 'مركزي', latin: 'Markazi Text', category: 'naskh', file: 'MarkaziText-VF.ttf', variable: { min: 400, max: 700, def: 400 } },
   { id: 'harmattan', name: 'هرمتان', latin: 'Harmattan', category: 'naskh', file: 'Harmattan-Regular.ttf', bold: 'Harmattan-Bold.ttf' },
+  { id: 'parastoo', name: 'پرستو', latin: 'Parastoo', category: 'naskh', file: 'Parastoo.ttf', bold: 'Parastoo-Bold.ttf' },
 
   // ثلث وعرض
   { id: 'rakkas', name: 'ركاز', latin: 'Rakkas', category: 'thuluth', file: 'Rakkas-Regular.ttf' },
@@ -81,6 +85,10 @@ export const FONTS: FontDef[] = [
   { id: 'marhey', name: 'مرحي', latin: 'Marhey', category: 'display', file: 'Marhey-VF.ttf', variable: { min: 300, max: 700, def: 500 } },
   { id: 'baloo', name: 'بالو بهيجان', latin: 'Baloo Bhaijaan 2', category: 'display', file: 'BalooBhaijaan2-VF.ttf', variable: { min: 400, max: 800, def: 600 } },
   { id: 'playpen', name: 'بلايبن', latin: 'Playpen Sans Arabic', category: 'display', file: 'PlaypenSansArabic-VF.ttf', variable: { min: 100, max: 800, def: 500 } },
+  { id: 'cairo-play', name: 'القاهرة المرح', latin: 'Cairo Play', category: 'display', file: 'CairoPlay-VF.ttf', variable: { min: 200, max: 1000, def: 600 } },
+  { id: 'gandom', name: 'گندم', latin: 'Gandom', category: 'display', file: 'Gandom.ttf' },
+  { id: 'tanha', name: 'تنها', latin: 'Tanha', category: 'display', file: 'Tanha.ttf' },
+  { id: 'nahid', name: 'ناهيد', latin: 'Nahid', category: 'display', file: 'Nahid.ttf' },
 
   // حديث
   { id: 'cairo', name: 'القاهرة', latin: 'Cairo', category: 'modern', file: 'Cairo-VF.ttf', variable: { min: 200, max: 1000, def: 600 } },
@@ -96,9 +104,30 @@ export const FONTS: FontDef[] = [
   { id: 'beiruti', name: 'بيروتي', latin: 'Beiruti', category: 'modern', file: 'Beiruti-VF.ttf', variable: { min: 200, max: 900, def: 500 } },
   { id: 'fustat', name: 'فسطاط', latin: 'Fustat', category: 'modern', file: 'Fustat-VF.ttf', variable: { min: 200, max: 800, def: 500 } },
   { id: 'noto-sans', name: 'نوتو سانس', latin: 'Noto Sans Arabic', category: 'modern', file: 'NotoSansArabic-VF.ttf', variable: { min: 100, max: 900, def: 400 } },
+  { id: 'rubik', name: 'روبيك', latin: 'Rubik', category: 'modern', file: 'Rubik-VF.ttf', variable: { min: 300, max: 900, def: 500 } },
+  { id: 'sahel', name: 'ساحل', latin: 'Sahel', category: 'modern', file: 'Sahel.ttf', bold: 'Sahel-Bold.ttf' },
+  { id: 'samim', name: 'صميم', latin: 'Samim', category: 'modern', file: 'Samim.ttf', bold: 'Samim-Bold.ttf' },
+  { id: 'shabnam', name: 'شبنم', latin: 'Shabnam', category: 'modern', file: 'Shabnam.ttf', bold: 'Shabnam-Bold.ttf' },
 ];
 
+/** عدد الخطوط المضمّنة (دون المستوردة) */
+export const BUILTIN_COUNT = FONTS.length;
+
 export const FONT_MAP: Record<string, FontDef> = Object.fromEntries(FONTS.map((f) => [f.id, f]));
+
+/** إضافة خط مستورد إلى الفهرس (أو تحديثه) */
+export function addFontDef(def: FontDef) {
+  const i = FONTS.findIndex((f) => f.id === def.id);
+  if (i >= 0) FONTS[i] = def;
+  else FONTS.unshift(def);
+  FONT_MAP[def.id] = def;
+}
+
+export function removeFontDef(id: string) {
+  const i = FONTS.findIndex((f) => f.id === id);
+  if (i >= 0) FONTS.splice(i, 1);
+  delete FONT_MAP[id];
+}
 
 export function getFont(id: string): FontDef {
   return FONT_MAP[id] ?? FONTS[0];

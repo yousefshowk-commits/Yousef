@@ -115,7 +115,7 @@ const registered = new Set<string>();
 export function ensureCssFont(id: string) {
   if (registered.has(id)) return;
   const def = FONT_MAP[id];
-  if (!def) return;
+  if (!def || def.user) return; // المستورد يُسجَّل من بياناته مباشرة
   registered.add(id);
   try {
     const ff = new FontFace(cssFamily(id), `url(${import.meta.env.BASE_URL}fonts/${def.file})`);

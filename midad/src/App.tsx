@@ -8,6 +8,7 @@ import { useStore } from './state/store';
 import { onFontsChanged, loadFont } from './engine/hb';
 import { bumpLayoutVersion } from './engine/layout';
 import { exportProject } from './engine/export';
+import { loadUserFonts } from './engine/userFonts';
 
 export default function App() {
   const library = useStore((s) => s.library);
@@ -29,6 +30,7 @@ export default function App() {
   useEffect(() => {
     void loadFont('amiri', 400);
     void loadFont('aref-ruqaa', 700);
+    void loadUserFonts();
   }, []);
 
   useEffect(() => {
